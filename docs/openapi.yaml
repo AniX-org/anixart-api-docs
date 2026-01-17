@@ -4,15 +4,22 @@ openapi: 3.1.0
 
 info:
   title: Anixart API
-  description:
-    This is an unofficial OpenAPI definition for the Anixart API, based
-    on Anixart beta 9
-  version: 9.0 beta 9
+  description: >
+    This is an unofficial OpenAPI specification of [Anixart](https://anixart-app.com) API
 
-externalDocs: {}
+
+    Based on Anixart 9.0 beta 9
+
+
+    Some of type definitions and endpoints are taken and converted from [AnixartJS](https://github.com/theDesConnet/AnixartJS) library
+
+
+    Made by [@Radiquum](https://wah.su/radiquum) at [@Anix-Org](https://github.com/AniX-org)
+  version: 9.0 beta 9
 
 servers:
   - url: https://api-s.anixsekai.com
+  - url: https://api.anixsekai.com
 
 tags:
   - name: Auth
@@ -1554,6 +1561,7 @@ components:
       properties:
         id:
           title: IReleaseCategory.id
+          type: integer
         name:
           title: IReleaseCategory.name
           type: string
@@ -1567,6 +1575,7 @@ components:
       properties:
         id:
           title: IReleaseStatus.id
+          type: integer
         name:
           title: IReleaseStatus.name
           type: string
