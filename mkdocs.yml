@@ -1,0 +1,29 @@
+site_name: Anixart (unofficial) API Documentation
+plugins:
+  - search
+  - neoteroi.mkdocsoad:
+      use_pymdownx: true
+extra_css:
+  - css/css-v1.2.0.css
+markdown_extensions:
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+theme:
+  name: material
+  palette:
+    # Light mode
+    - scheme: default
+      toggle:
+        icon: material/weather-night # Icon for the toggle button
+        name: Switch to dark mode
+      primary: red
+      accent: deep red
+    # Dark mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny # Icon for the toggle button
+        name: Switch to light mode
+      primary: red
+      accent: deep red

@@ -1,0 +1,1838 @@
+---
+"$schema": "https://spec.openapis.org/oas/3.1/dialect/base"
+openapi: 3.1.0
+
+info:
+  title: Anixart API
+  description:
+    This is an unofficial OpenAPI definition for the Anixart API, based
+    on Anixart beta 9
+  version: 9.0 beta 9
+
+externalDocs: {}
+
+servers:
+  - url: https://api-s.anixsekai.com
+
+tags:
+  - name: Auth
+    description: User authentication
+  - name: Discover
+    description: Discover content
+
+paths:
+  "/auth/signIn":
+    post:
+      tags:
+        - Auth
+      summary: Sign in
+      description: Sign in to account and get a token
+      operationId: authSignIn
+      parameters:
+        - name: login
+          in: query
+          description: account login or email
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: account password
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ILoginResponse"
+  "/auth/signUp":
+    post:
+      tags:
+        - Auth
+      summary: Sign up
+      description: Sign up new account and get a verify code
+      operationId: authSignUp
+      parameters:
+        - name: email
+          in: query
+          description: account email
+          required: true
+          schema:
+            type: string
+        - name: login
+          in: query
+          description: account login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: account password
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/IRegisterResponse"
+  "/auth/verify":
+    post:
+      tags:
+        - Auth
+      summary: Verify sign up
+      description: verify sign up of an account and get a token
+      operationId: authVerify
+      parameters:
+        - name: email
+          in: query
+          description: account email
+          required: true
+          schema:
+            type: string
+        - name: login
+          in: query
+          description: account login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: account password
+          required: true
+          schema:
+            type: string
+        - name: hash
+          in: query
+          description: verify hash
+          required: true
+          schema:
+            type: string
+        - name: code
+          in: query
+          description: verify code
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/IRegisterVerifyResponse"
+  "/auth/restore":
+    post:
+      tags:
+        - Auth
+      summary: Restore a password
+      description: Send a verify code to restore a password
+      operationId: authRestore
+      parameters:
+        - name: login
+          in: query
+          description: account login
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/IRestoreResponse"
+  "/auth/restore/verify":
+    post:
+      tags:
+        - Auth
+      summary: verify a password reset
+      description: verify a password reset for account and get a token
+      operationId: authRestoreVerify
+      parameters:
+        - name: login
+          in: query
+          description: account login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: account password
+          required: true
+          schema:
+            type: string
+        - name: hash
+          in: query
+          description: verify hash
+          required: true
+          schema:
+            type: string
+        - name: code
+          in: query
+          description: verify code
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/IRestoreVerifyResponse"
+
+  "/discover/watching/{page}":
+    get:
+      tags:
+        - Discover
+      summary: Watching now
+      description: Get currently watching releases by users
+      operationId: discoverWatching
+      parameters:
+        - name: page
+          in: path
+          description: page
+          required: true
+          schema:
+            type: integer
+            example: 0
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/IReleasesPagedResponse"
+      security:
+        - token: []
+  "/discover/discussing":
+    get:
+      tags:
+        - Discover
+      summary: Most discussing releases
+      description: Get 5 currently most discussing releases by users
+      operationId: discoverDiscussing
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/IReleasesPagedResponse"
+      security:
+        - token: []
+  "/discover/recommendations/{page}":
+    get:
+      tags:
+        - Discover
+      summary: Get recommendations list
+      description: Get recommendations list. Authentication is required
+      operationId: discoverRecommendations
+      parameters:
+        - name: page
+          in: path
+          description: page
+          required: true
+          schema:
+            type: integer
+            example: 0
+        - name: previous_page
+          in: query
+          description: Current page - 1, should always be set
+          required: true
+          schema:
+            type: integer
+            example: 0
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/IReleasesPagedResponse"
+      security:
+        - token: []
+  "/discover/interesting":
+    get:
+      tags:
+        - Discover
+      summary: Interesting releases
+      description: Get currently Interesting releases by users
+      operationId: discoverInteresting
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/IDiscoverInterestingResponse"
+      security:
+        - token: []
+  "/discover/comments":
+    get:
+      tags:
+        - Discover
+      summary: Get popular comments
+      description: Get 10 popular comments
+      operationId: discoverComments
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ICommentReleasePagedResponse"
+      security:
+        - token: []
+
+components:
+  schemas:
+    ILoginResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/LoginResult"
+        profile:
+          "$ref": "#/components/schemas/IProfile"
+        profileToken:
+          "$ref": "#/components/schemas/IProfileToken"
+    IRegisterResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/RegisterResult"
+        hash:
+          type: string
+          example: "hash"
+        codeTimestampExpires:
+          type: integer
+    IRegisterVerifyResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/RegisterVerifyResult"
+        profile:
+          "$ref": "#/components/schemas/IProfile"
+        profileToken:
+          "$ref": "#/components/schemas/IProfileToken"
+    IRestoreResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/RestoreResult"
+        hash:
+          type: string
+          example: "hash"
+        codeTimestampExpires:
+          type: integer
+    IRestoreVerifyResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/RestoreVerifyResult"
+        profile:
+          "$ref": "#/components/schemas/IProfile"
+        profileToken:
+          "$ref": "#/components/schemas/IProfileToken"
+    IReleasesPagedResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResult"
+        content:
+          type: array
+          items:
+            "$ref": "#/components/schemas/IRelease"
+        total_count:
+          type: integer
+          example: 0
+        total_page_count:
+          type: integer
+          example: 0
+        current_page:
+          type: integer
+          example: 0
+    IDiscoverInterestingResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResult"
+        content:
+          type: array
+          items:
+            "$ref": "#/components/schemas/IInterestingRelease"
+        total_count:
+          type: integer
+          example: 0
+        total_page_count:
+          type: integer
+          example: 0
+        current_page:
+          type: integer
+          example: 0
+    ICommentReleasePagedResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResult"
+        content:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ICommentRelease"
+        total_count:
+          type: integer
+          example: 0
+        total_page_count:
+          type: integer
+          example: 0
+        current_page:
+          type: integer
+          example: 0
+
+  # -- Api Status Codes
+    DefaultResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - const: 0
+          title: Success
+          description: Everything is OK!
+        - const: 1
+          title: UnexpectedError
+          description: Something went wrong
+        - const: 401
+          title: Unauthorized
+          description: Not logged in
+        - const: 402
+          title: Ban
+          description: Temporary banned
+        - const: 403
+          title: PermBan
+          description: Permanently banned
+    LoginResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResult"
+          title: Default schemas
+        - const: 2
+          title: InvalidLogin
+        - const: 3
+          title: InvalidPassword
+    RegisterResult:
+        type: integer
+        format: integer
+        example: 0
+        oneOf:
+          - "$ref": "#/components/schemas/DefaultResult"
+          - const: 2
+            title: InvalidLogin
+          - const: 3
+            title: InvalidEmail
+          - const: 4
+            title: InvalidPassword
+          - const: 5
+            title: LoginAlreadyTaken
+          - const: 6
+            title: EmailAlreadyTaken
+          - const: 7
+            title: CodeAlreadySend
+          - const: 8
+            title: CodeCannotSend
+          - const: 9
+            title: EmailServiceDisallowed
+          - const: 10
+            title: TooManyRegistrations
+    RegisterVerifyResult:
+        type: integer
+        format: integer
+        example: 0
+        oneOf:
+          - "$ref": "#/components/schemas/DefaultResult"
+          - const: 2
+            title: InvalidLogin
+          - const: 3
+            title: InvalidEmail
+          - const: 4
+            title: InvalidPassword
+          - const: 5
+            title: LoginAlreadyTaken
+          - const: 6
+            title: EmailAlreadyTaken
+          - const: 7
+            title: CodeAlreadySend
+          - const: 8
+            title: CodeCannotSend
+          - const: 9
+            title: InvalidHash
+          - const: 10
+            title: EmailServiceDisallowed
+          - const: 11
+            title: TooManyRegistrations
+    RestoreResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResult"
+        - const: 2
+          title: ProfileNotFound
+        - const: 3
+          title: CodeAlreadySend
+        - const: 4
+          title: CodeCannotSend
+    RestoreVerifyResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResult"
+        - const: 2
+          title: ProfileNotFound
+        - const: 3
+          title: InvalidPassword
+        - const: 4
+          title: CodeInvalid
+        - const: 5
+          title: CodeExpired
+        - const: 6
+          title: InvalidHash
+
+  # -- Types
+    # -- Profile
+    IProfile:
+      properties:
+        id:
+          title: IProfile.id
+          type: integer
+        login:
+          title: IProfile.login
+          type: string
+        avatar:
+          title: IProfile.avatar
+          type: string
+        status:
+          title: IProfile.status
+          type: string
+        sponsorshipExpires:
+          title: IProfile.sponsorshipExpires
+          type: integer
+        history:
+          items:
+            "$ref": "#/components/schemas/IRelease"
+          title: IProfile.history
+          nullable: true
+          type: array
+        votes:
+          items:
+            "$ref": "#/components/schemas/IVoteRelease"
+          title: IProfile.votes
+          nullable: true
+          type: array
+        last_activity_time:
+          title: IProfile.last_activity_time
+          type: integer
+        register_date:
+          title: IProfile.register_date
+          type: integer
+        vk_page:
+          title: IProfile.vk_page
+          type: string
+        tg_page:
+          title: IProfile.tg_page
+          type: string
+        inst_page:
+          title: IProfile.inst_page
+          type: string
+        tt_page:
+          title: IProfile.tt_page
+          type: string
+        discord_page:
+          title: IProfile.discord_page
+          type: string
+        ban_expires:
+          title: IProfile.ban_expires
+          type: integer
+        ban_reason:
+          title: IProfile.ban_reason
+          type: string
+        ban_note:
+          title: IProfile.ban_note
+          nullable: true
+          type: string
+        privilege_level:
+          title: IProfile.privilege_level
+          type: integer
+        watching_count:
+          title: IProfile.watching_count
+          type: integer
+        plan_count:
+          title: IProfile.plan_count
+          type: integer
+        completed_count:
+          title: IProfile.completed_count
+          type: integer
+        hold_on_count:
+          title: IProfile.hold_on_count
+          type: integer
+        dropped_count:
+          title: IProfile.dropped_count
+          type: integer
+        favorite_count:
+          title: IProfile.favorite_count
+          type: integer
+        comment_count:
+          title: IProfile.comment_count
+          type: integer
+        collection_count:
+          title: IProfile.collection_count
+          type: integer
+        video_count:
+          title: IProfile.video_count
+          type: integer
+        friend_count:
+          title: IProfile.friend_count
+          type: integer
+        watched_episode_count:
+          title: IProfile.watched_episode_count
+          type: integer
+        watched_time:
+          title: IProfile.watched_time
+          type: integer
+        is_private:
+          title: IProfile.is_private
+          type: boolean
+        is_sponsor:
+          title: IProfile.is_sponsor
+          type: boolean
+        is_banned:
+          title: IProfile.is_banned
+          type: boolean
+        is_perm_banned:
+          title: IProfile.is_perm_banned
+          type: boolean
+        is_bookmarks_transferred:
+          title: IProfile.is_bookmarks_transferred
+          type: boolean
+        is_sponsor_transferred:
+          title: IProfile.is_sponsor_transferred
+          type: boolean
+        is_vk_bound:
+          title: IProfile.is_vk_bound
+          type: boolean
+        is_google_bound:
+          title: IProfile.is_google_bound
+          type: boolean
+        is_release_type_notifications_enabled:
+          title: IProfile.is_release_type_notifications_enabled
+          type: boolean
+        is_episode_notifications_enabled:
+          title: IProfile.is_episode_notifications_enabled
+          type: boolean
+        is_first_episode_notification_enabled:
+          title: IProfile.is_first_episode_notification_enabled
+          type: boolean
+        is_related_release_notifications_enabled:
+          title: IProfile.is_related_release_notifications_enabled
+          type: boolean
+        is_report_process_notifications_enabled:
+          title: IProfile.is_report_process_notifications_enabled
+          type: boolean
+        is_comment_notifications_enabled:
+          title: IProfile.is_comment_notifications_enabled
+          type: boolean
+        is_my_collection_comment_notifications_enabled:
+          title: IProfile.is_my_collection_comment_notifications_enabled
+          type: boolean
+        is_verified:
+          title: IProfile.is_verified
+          type: boolean
+        watch_dynamics:
+          items:
+            $ref: "#/components/schemas/IWatchDynamics"
+            title: IProfile.watch_dynamics.[]
+          title: IProfile.watch_dynamics
+          type: array
+        friend_status:
+          title: IProfile.friend_status
+          type: integer
+        rating_score:
+          title: IProfile.rating_score
+          type: integer
+        is_blocked:
+          title: IProfile.is_blocked
+          type: boolean
+        is_me_blocked:
+          title: IProfile.is_me_blocked
+          type: boolean
+        is_stats_hidden:
+          title: IProfile.is_stats_hidden
+          type: boolean
+        is_counts_hidden:
+          title: IProfile.is_counts_hidden
+          type: boolean
+        is_social_hidden:
+          title: IProfile.is_social_hidden
+          type: boolean
+        is_friend_requests_disallowed:
+          title: IProfile.is_friend_requests_disallowed
+          type: boolean
+        is_online:
+          title: IProfile.is_online
+          type: boolean
+        roles:
+          items:
+            $ref: "#/components/schemas/IRole"
+            title: IProfile.roles.[]
+          title: IProfile.roles
+          type: array
+        badge:
+          anyOf:
+            - $ref: "#/components/schemas/IBadge"
+              title: IProfile.badge
+            - title: IProfile.badge
+              nullable: true
+          title: IProfile.badge
+        preferred_genres:
+          items:
+            $ref: "#/components/schemas/IPreferredType"
+            title: IProfile.preferred_genres.[]
+          title: IProfile.preferred_genres
+          type: array
+        preferred_audiences:
+          items:
+            $ref: "#/components/schemas/IPreferredType"
+            title: IProfile.preferred_audiences.[]
+          title: IProfile.preferred_audiences
+          type: array
+        preferred_themes:
+          items:
+            $ref: "#/components/schemas/IPreferredType"
+            title: IProfile.preferred_themes.[]
+          title: IProfile.preferred_themes
+          type: array
+        theme_enabled:
+          title: IProfile.theme_enabled
+          type: boolean
+        theme_gradient_start_color:
+          title: IProfile.theme_gradient_start_color
+          nullable: true
+          type: string
+        theme_gradient_end_color:
+          title: IProfile.theme_gradient_end_color
+          nullable: true
+          type: string
+        theme_gradient_angle:
+          title: IProfile.theme_gradient_angle
+          nullable: true
+          type: string
+        theme_icon_res_name:
+          title: IProfile.theme_icon_res_name
+          nullable: true
+          type: string
+        theme_icon_url:
+          title: IProfile.theme_icon_url
+          nullable: true
+          type: string
+        theme_icon_color:
+          title: IProfile.theme_icon_color
+          nullable: true
+          type: string
+        theme_icon_alpha:
+          title: IProfile.theme_icon_alpha
+          type: integer
+        theme_icon_destiny:
+          title: IProfile.theme_icon_destiny
+          nullable: true
+          type: string
+        theme_icon_size:
+          title: IProfile.theme_icon_size
+          nullable: true
+          type: string
+        theme_animation_enabled:
+          title: IProfile.theme_animation_enabled
+          type: boolean
+        theme_animation_speed:
+          title: IProfile.theme_animation_speed
+          nullable: true
+          type: string
+        theme_background_url:
+          title: IProfile.theme_background_url
+          nullable: true
+          type: string
+        theme_background_mode:
+          title: IProfile.theme_background_mode
+          nullable: true
+          type: string
+        theme_background_alpha:
+          title: IProfile.theme_background_alpha
+          nullable: true
+          type: integer
+      required:
+        - id
+        - login
+        - avatar
+        - status
+        - sponsorshipExpires
+        - history
+        - votes
+        - last_activity_time
+        - register_date
+        - vk_page
+        - tg_page
+        - inst_page
+        - tt_page
+        - discord_page
+        - ban_expires
+        - ban_reason
+        - ban_note
+        - privilege_level
+        - watching_count
+        - plan_count
+        - completed_count
+        - hold_on_count
+        - dropped_count
+        - favorite_count
+        - comment_count
+        - collection_count
+        - video_count
+        - friend_count
+        - watched_episode_count
+        - watched_time
+        - is_private
+        - is_sponsor
+        - is_banned
+        - is_perm_banned
+        - is_bookmarks_transferred
+        - is_sponsor_transferred
+        - is_vk_bound
+        - is_google_bound
+        - is_release_type_notifications_enabled
+        - is_episode_notifications_enabled
+        - is_first_episode_notification_enabled
+        - is_related_release_notifications_enabled
+        - is_report_process_notifications_enabled
+        - is_comment_notifications_enabled
+        - is_my_collection_comment_notifications_enabled
+        - is_verified
+        - watch_dynamics
+        - friend_status
+        - rating_score
+        - is_blocked
+        - is_me_blocked
+        - is_stats_hidden
+        - is_counts_hidden
+        - is_social_hidden
+        - is_friend_requests_disallowed
+        - is_online
+        - roles
+        - badge
+        - preferred_genres
+        - preferred_audiences
+        - preferred_themes
+        - theme_enabled
+        - theme_gradient_start_color
+        - theme_gradient_end_color
+        - theme_gradient_angle
+        - theme_icon_res_name
+        - theme_icon_url
+        - theme_icon_color
+        - theme_icon_alpha
+        - theme_icon_destiny
+        - theme_icon_size
+        - theme_animation_enabled
+        - theme_animation_speed
+        - theme_background_url
+        - theme_background_mode
+        - theme_background_alpha
+      additionalProperties: false
+      title: IProfile
+      type: object
+    IRole:
+      properties:
+        color:
+          title: IRole.color
+          type: string
+        name:
+          title: IRole.name
+          type: string
+      required:
+        - color
+        - name
+      additionalProperties: false
+      title: IRole
+      type: object
+    IBadge:
+      properties:
+        id:
+          title: IBadge.id
+          type: integer
+        name:
+          title: IBadge.name
+          type: string
+        type:
+          title: IBadge.type
+          type: integer
+        image_url:
+          title: IBadge.image_url
+          type: string
+        timestamp:
+          title: IBadge.timestamp
+          type: integer
+      required:
+        - id
+        - name
+        - type
+        - image_url
+        - timestamp
+      additionalProperties: false
+      title: IBadge
+      type: object
+    IWatchDynamics:
+      properties:
+        id:
+          title: IWatchDynamics.id
+          type: integer
+        day:
+          title: IWatchDynamics.day
+          type: integer
+        count:
+          title: IWatchDynamics.count
+          type: integer
+        timestamp:
+          title: IWatchDynamics.timestamp
+          type: integer
+      required:
+        - id
+        - day
+        - count
+        - timestamp
+      additionalProperties: false
+      title: IWatchDynamics
+      type: object
+    IPreferredType:
+      properties:
+        name:
+          title: IPreferredType.name
+          type: string
+        percentage:
+          title: IPreferredType.percentage
+          type: integer
+      required:
+        - name
+        - percentage
+      additionalProperties: false
+      title: IPreferredType
+      type: object
+    IProfileShort:
+      properties:
+        id:
+          title: IProfileShort.id
+          type: integer
+        login:
+          title: IProfileShort.login
+          type: string
+        avatar:
+          title: IProfileShort.avatar
+          type: string
+        ban_expires:
+          title: IProfileShort.ban_expires
+          type: integer
+        ban_reason:
+          title: IProfileShort.ban_reason
+          type: string
+        privilege_level:
+          title: IProfileShort.privilege_level
+          type: integer
+        badge_id:
+          title: IProfileShort.badge_id
+          nullable: true
+          type: integer
+        badge_name:
+          title: IProfileShort.badge_name
+          nullable: true
+          type: string
+        badge_type:
+          title: IProfileShort.badge_type
+          nullable: true
+          type: integer
+        badge_url:
+          title: IProfileShort.badge_url
+          nullable: true
+          type: string
+        is_banned:
+          title: IProfileShort.is_banned
+          type: boolean
+        is_sponsor:
+          title: IProfileShort.is_sponsor
+          type: boolean
+        is_verified:
+          title: IProfileShort.is_verified
+          type: boolean
+        is_online:
+          title: IProfileShort.is_online
+          type: boolean
+        friend_status:
+          title: IProfileShort.friend_status
+          type: integer
+        friend_count:
+          title: IProfileShort.friend_count
+          type: integer
+      required:
+        - id
+        - login
+        - avatar
+        - ban_expires
+        - ban_reason
+        - privilege_level
+        - badge_id
+        - badge_name
+        - badge_type
+        - badge_url
+        - is_banned
+        - is_sponsor
+        - is_verified
+        - is_online
+        - friend_status
+        - friend_count
+      additionalProperties: false
+      title: IProfileShort
+      type: object
+    IProfileToken:
+      properties:
+        id:
+          title: IProfileToken.id
+          type: string
+        token:
+          title: IProfileToken.token
+          type: string
+      required:
+        - id
+        - token
+      additionalProperties: false
+      title: IProfileToken
+      type: object
+
+    # -- Release
+    IRelease:
+      properties:
+        "@id":
+          title: IRelease."@id"
+          type: integer
+        id:
+          title: IRelease.id
+          type: integer
+        poster:
+          title: IRelease.poster
+          type: string
+        image:
+          title: IRelease.image
+          type: string
+        year:
+          title: IRelease.year
+          type: string
+        genres:
+          title: IRelease.genres
+          type: string
+        country:
+          title: IRelease.country
+          type: string
+        director:
+          title: IRelease.director
+          type: string
+        author:
+          title: IRelease.author
+          type: string
+        translators:
+          title: IRelease.translators
+          type: string
+        studio:
+          title: IRelease.studio
+          type: string
+        description:
+          title: IRelease.description
+          type: string
+        note:
+          title: IRelease.note
+          nullable: true
+          type: string
+        related:
+          $ref: '#/components/schemas/IRelated'
+          title: IRelease.related
+        category:
+          $ref: '#/components/schemas/IReleaseCategory'
+          title: IRelease.category
+        rating:
+          title: IRelease.rating
+          type: integer
+        grade:
+          title: IRelease.grade
+          type: integer
+        status:
+          $ref: '#/components/schemas/IReleaseStatus'
+          title: IRelease.status
+        duration:
+          title: IRelease.duration
+          type: integer
+        season:
+          title: IRelease.season
+          type: integer
+        broadcast:
+          title: IRelease.broadcast
+          type: integer
+        screenshots:
+          items:
+            title: IRelease.screenshots.[]
+            type: string
+          title: IRelease.screenshots
+          type: array
+        comments:
+          items:
+            $ref: '#/components/schemas/ICommentRelease'
+            title: IRelease.comments.[]
+          title: IRelease.comments
+          type: array
+        title_original:
+          title: IRelease.title_original
+          type: string
+        title_ru:
+          title: IRelease.title_ru
+          type: string
+        title_alt:
+          title: IRelease.title_alt
+          type: string
+        episodes_released:
+          title: IRelease.episodes_released
+          type: integer
+        episodes_total:
+          title: IRelease.episodes_total
+          type: integer
+        release_date:
+          title: IRelease.release_date
+          type: string
+        vote_1_count:
+          title: IRelease.vote_1_count
+          type: integer
+        vote_2_count:
+          title: IRelease.vote_2_count
+          type: integer
+        vote_3_count:
+          title: IRelease.vote_3_count
+          type: integer
+        vote_4_count:
+          title: IRelease.vote_4_count
+          type: integer
+        vote_5_count:
+          title: IRelease.vote_5_count
+          type: integer
+        vote_count:
+          title: IRelease.vote_count
+          type: integer
+        creation_date:
+          title: IRelease.creation_date
+          type: integer
+        last_update_date:
+          title: IRelease.last_update_date
+          type: integer
+        aired_on_date:
+          title: IRelease.aired_on_date
+          type: integer
+        favorites_count:
+          title: IRelease.favorites_count
+          type: integer
+        watching_count:
+          title: IRelease.watching_count
+          type: integer
+        plan_count:
+          title: IRelease.plan_count
+          type: integer
+        completed_count:
+          title: IRelease.completed_count
+          type: integer
+        hold_on_count:
+          title: IRelease.hold_on_count
+          type: integer
+        dropped_count:
+          title: IRelease.dropped_count
+          type: integer
+        is_adult:
+          title: IRelease.is_adult
+          type: boolean
+        is_play_disabled:
+          title: IRelease.is_play_disabled
+          type: boolean
+        is_tpp_disabled:
+          title: IRelease.is_tpp_disabled
+          type: boolean
+        can_video_appeal:
+          title: IRelease.can_video_appeal
+          type: boolean
+        can_torlook_search:
+          title: IRelease.can_torlook_search
+          type: boolean
+        is_deleted:
+          title: IRelease.is_deleted
+          type: boolean
+        age_rating:
+          title: IRelease.age_rating
+          type: integer
+        your_vote:
+          title: IRelease.your_vote
+          type: integer
+        related_count:
+          title: IRelease.related_count
+          type: integer
+        comment_count:
+          title: IRelease.comment_count
+          type: integer
+        comments_count:
+          title: IRelease.comments_count
+          type: integer
+        collection_count:
+          title: IRelease.collection_count
+          type: integer
+        profile_list_status:
+          title: IRelease.profile_list_status
+          type: integer
+        status_id:
+          title: IRelease.status_id
+          type: integer
+        last_view_timestamp:
+          title: IRelease.last_view_timestamp
+          type: integer
+        last_view_episode:
+          $ref: '#/components/schemas/IEpisode'
+          title: IRelease.last_view_episode
+        is_viewed:
+          title: IRelease.is_viewed
+          type: boolean
+        is_favorite:
+          title: IRelease.is_favorite
+          type: boolean
+        is_view_blocked:
+          title: IRelease.is_view_blocked
+          type: boolean
+        screenshot_images:
+          items:
+            title: IRelease.screenshot_images.[]
+            type: string
+          title: IRelease.screenshot_images
+          type: array
+        related_releases:
+          items:
+            $ref: '#/components/schemas/IRelease'
+            title: IRelease.related_releases.[]
+          title: IRelease.related_releases
+          type: array
+        recommended_releases:
+          items:
+            $ref: '#/components/schemas/IRelease'
+            title: IRelease.recommended_releases.[]
+          title: IRelease.recommended_releases
+          type: array
+        episode_last_update:
+          $ref: '#/components/schemas/IEpisodeLastUpdate'
+          title: IRelease.episode_last_update
+        comment_per_day_count:
+          title: IRelease.comment_per_day_count
+          type: integer
+        video_banners:
+          items:
+            $ref: '#/components/schemas/IVideoBanners'
+            title: IRelease.video_banners.[]
+          title: IRelease.video_banners
+          type: array
+        profile_release_type_notification_preference_count:
+          title: IRelease.profile_release_type_notification_preference_count
+          type: integer
+        is_release_type_notifications_enabled:
+          title: IRelease.is_release_type_notifications_enabled
+          type: boolean
+      required:
+        - '''@id'''
+        - id
+        - poster
+        - image
+        - year
+        - genres
+        - country
+        - director
+        - author
+        - translators
+        - studio
+        - description
+        - note
+        - related
+        - category
+        - rating
+        - grade
+        - status
+        - duration
+        - season
+        - broadcast
+        - screenshots
+        - comments
+        - title_original
+        - title_ru
+        - title_alt
+        - episodes_released
+        - episodes_total
+        - release_date
+        - vote_1_count
+        - vote_2_count
+        - vote_3_count
+        - vote_4_count
+        - vote_5_count
+        - vote_count
+        - creation_date
+        - last_update_date
+        - aired_on_date
+        - favorites_count
+        - watching_count
+        - plan_count
+        - completed_count
+        - hold_on_count
+        - dropped_count
+        - is_adult
+        - is_play_disabled
+        - is_tpp_disabled
+        - can_video_appeal
+        - can_torlook_search
+        - is_deleted
+        - age_rating
+        - your_vote
+        - related_count
+        - comment_count
+        - comments_count
+        - collection_count
+        - profile_list_status
+        - status_id
+        - last_view_timestamp
+        - last_view_episode
+        - is_viewed
+        - is_favorite
+        - is_view_blocked
+        - screenshot_images
+        - related_releases
+        - recommended_releases
+        - episode_last_update
+        - comment_per_day_count
+        - video_banners
+        - profile_release_type_notification_preference_count
+        - is_release_type_notifications_enabled
+      additionalProperties: false
+      title: IRelease
+      type: object
+    IEpisodeLastUpdate:
+      properties:
+        lastEpisodeTypeUpdateName:
+          title: IEpisodeLastUpdate.lastEpisodeTypeUpdateName
+          type: string
+        last_episode_source_update_id:
+          title: IEpisodeLastUpdate.last_episode_source_update_id
+          type: integer
+        last_episode_source_update_name:
+          title: IEpisodeLastUpdate.last_episode_source_update_name
+          type: string
+        last_episode_type_update_id:
+          title: IEpisodeLastUpdate.last_episode_type_update_id
+          type: integer
+        last_episode_update_date:
+          title: IEpisodeLastUpdate.last_episode_update_date
+          type: integer
+        last_episode_update_name:
+          title: IEpisodeLastUpdate.last_episode_update_name
+          type: string
+      required:
+        - lastEpisodeTypeUpdateName
+        - last_episode_source_update_id
+        - last_episode_source_update_name
+        - last_episode_type_update_id
+        - last_episode_update_date
+        - last_episode_update_name
+      additionalProperties: false
+      title: IEpisodeLastUpdate
+      type: object
+    IVideoBanners:
+      properties:
+        name:
+          title: IVideoBanners.name
+          type: string
+        image:
+          title: IVideoBanners.image
+          type: string
+        value:
+          title: IVideoBanners.value
+          type: string
+        action_id:
+          title: IVideoBanners.action_id
+          type: integer
+        is_new:
+          title: IVideoBanners.is_new
+          type: boolean
+      required:
+        - name
+        - image
+        - value
+        - action_id
+        - is_new
+      additionalProperties: false
+      title: IVideoBanners
+      type: object
+    IRelated:
+      properties:
+        description:
+          title: IRelated.description
+          type: string
+        id:
+          title: IRelated.id
+          type: integer
+        image:
+          title: IRelated.image
+          type: string
+        images:
+          items:
+            title: IRelated.images.[]
+            type: string
+          title: IRelated.images
+          type: array
+        name:
+          title: IRelated.name
+          type: string
+        name_ru:
+          title: IRelated.name_ru
+          type: string
+        release_count:
+          title: IRelated.release_count
+          type: integer
+      required:
+        - description
+        - id
+        - image
+        - images
+        - name
+        - name_ru
+        - release_count
+      additionalProperties: false
+      title: IRelated
+      type: object
+    IEpisode:
+      properties:
+        "@id":
+          title: IEpisode."@id"
+          type: integer
+        position:
+          title: IEpisode.position
+          type: integer
+        release:
+          anyOf:
+            - $ref: '#/components/schemas/IRelease'
+              title: IEpisode.release
+            - title: IEpisode.release
+              type: integer
+          title: IEpisode.release
+        source:
+          anyOf:
+            - $ref: '#/components/schemas/ISource'
+              title: IEpisode.source
+            - title: IEpisode.source
+              type: integer
+          title: IEpisode.source
+        name:
+          title: IEpisode.name
+          type: string
+        url:
+          title: IEpisode.url
+          type: string
+        iframe:
+          title: IEpisode.iframe
+          type: boolean
+        addedDate:
+          title: IEpisode.addedDate
+          type: integer
+        is_filter:
+          title: IEpisode.is_filter
+          type: boolean
+        is_watched:
+          title: IEpisode.is_watched
+          type: boolean
+      required:
+        - "@id"
+        - position
+        - release
+        - source
+        - name
+        - url
+        - iframe
+        - addedDate
+        - is_filter
+        - is_watched
+      additionalProperties: false
+      title: IEpisode
+      type: object
+    ISource:
+      properties:
+        '''@id''':
+          title: ISource.'@id'
+          type: integer
+        id:
+          title: ISource.id
+          type: integer
+        name:
+          title: ISource.name
+          type: string
+        type:
+          anyOf:
+            - $ref: '#/components/schemas/IDubber'
+              title: ISource.type
+            - title: ISource.type
+              type: integer
+          title: ISource.type
+        episode_count:
+          title: ISource.episode_count
+          type: integer
+      required:
+        - '''@id'''
+        - id
+        - name
+        - type
+        - episode_count
+      additionalProperties: false
+      title: ISource
+      type: object
+    IDubber:
+      properties:
+        '''@id''':
+          title: IDubber.'@id'
+          type: integer
+        id:
+          title: IDubber.id
+          type: integer
+        name:
+          title: IDubber.name
+          type: string
+        icon:
+          title: IDubber.icon
+          type: string
+        workers:
+          title: IDubber.workers
+          type: string
+        is_sub:
+          title: IDubber.is_sub
+          type: boolean
+        episode_count:
+          title: IDubber.episode_count
+          type: integer
+        view_count:
+          title: IDubber.view_count
+          type: integer
+        pinned:
+          title: IDubber.pinned
+          type: boolean
+      required:
+        - '''@id'''
+        - id
+        - name
+        - icon
+        - workers
+        - is_sub
+        - episode_count
+        - view_count
+        - pinned
+      additionalProperties: false
+      title: IDubber
+      type: object
+    IReleaseCategory:
+      properties:
+        id:
+          title: IReleaseCategory.id
+        name:
+          title: IReleaseCategory.name
+          type: string
+      required:
+        - id
+        - name
+      additionalProperties: false
+      title: IReleaseCategory
+      type: object
+    IReleaseStatus:
+      properties:
+        id:
+          title: IReleaseStatus.id
+        name:
+          title: IReleaseStatus.name
+          type: string
+      required:
+        - id
+        - name
+      additionalProperties: false
+      title: IReleaseStatus
+      type: object
+    IVoteRelease:
+      properties:
+        translation:
+          title: IVoteRelease.translation
+          type: string
+        id:
+          title: IVoteRelease.id
+          type: integer
+        broadcast:
+          title: IVoteRelease.broadcast
+          type: integer
+        year:
+          title: IVoteRelease.year
+          type: string
+        country:
+          title: IVoteRelease.country
+          type: string
+        duration:
+          title: IVoteRelease.duration
+          type: integer
+        description:
+          title: IVoteRelease.description
+          type: string
+        image:
+          title: IVoteRelease.image
+          type: string
+        genres:
+          title: IVoteRelease.genres
+          type: string
+        studio:
+          title: IVoteRelease.studio
+          type: string
+        season:
+          title: IVoteRelease.season
+          type: integer
+        note:
+          title: IVoteRelease.note
+          nullable: true
+          type: string
+        author:
+          title: IVoteRelease.author
+          type: string
+        director:
+          title: IVoteRelease.director
+          type: string
+        rating:
+          title: IVoteRelease.rating
+          type: integer
+        grade:
+          title: IVoteRelease.grade
+          type: integer
+        status:
+          title: IVoteRelease.status
+          type: integer
+        poster:
+          title: IVoteRelease.poster
+          type: string
+        title_original:
+          title: IVoteRelease.title_original
+          type: string
+        title_ru:
+          title: IVoteRelease.title_ru
+          type: string
+        favorites_count:
+          title: IVoteRelease.favorites_count
+          type: integer
+        creation_date:
+          title: IVoteRelease.creation_date
+          type: integer
+        last_update_date:
+          title: IVoteRelease.last_update_date
+          type: integer
+        is_deleted:
+          title: IVoteRelease.is_deleted
+          type: boolean
+        is_favorite:
+          title: IVoteRelease.is_favorite
+          type: boolean
+        is_viewed:
+          title: IVoteRelease.is_viewed
+          type: boolean
+        is_play_disabled:
+          title: IVoteRelease.is_play_disabled
+          type: boolean
+        is_adult:
+          title: IVoteRelease.is_adult
+          type: boolean
+        my_vote:
+          title: IVoteRelease.my_vote
+          type: integer
+        voted_at:
+          title: IVoteRelease.voted_at
+          type: integer
+        episodes_released:
+          title: IVoteRelease.episodes_released
+          type: integer
+        episodes_total:
+          title: IVoteRelease.episodes_total
+          type: integer
+        release_date:
+          title: IVoteRelease.release_date
+          type: string
+        age_rating:
+          title: IVoteRelease.age_rating
+          type: integer
+        profile_list_status:
+          title: IVoteRelease.profile_list_status
+          type: integer
+      required:
+        - translation
+        - id
+        - broadcast
+        - year
+        - country
+        - duration
+        - description
+        - image
+        - genres
+        - studio
+        - season
+        - note
+        - author
+        - director
+        - rating
+        - grade
+        - status
+        - poster
+        - title_original
+        - title_ru
+        - favorites_count
+        - creation_date
+        - last_update_date
+        - is_deleted
+        - is_favorite
+        - is_viewed
+        - is_play_disabled
+        - is_adult
+        - my_vote
+        - voted_at
+        - episodes_released
+        - episodes_total
+        - release_date
+        - age_rating
+        - profile_list_status
+      additionalProperties: false
+      title: IVoteRelease
+      type: object
+    IInterestingRelease:
+      properties:
+        '''@id''':
+          title: IInterestingRelease.'@id'
+          type: integer
+        id:
+          title: IInterestingRelease.id
+          type: integer
+        title:
+          title: IInterestingRelease.title
+          type: string
+        image:
+          title: IInterestingRelease.image
+          type: string
+        description:
+          title: IInterestingRelease.description
+          type: string
+        type:
+          title: IInterestingRelease.type
+          type: integer
+        action:
+          title: IInterestingRelease.action
+          type: string
+        is_hidden:
+          title: IInterestingRelease.is_hidden
+          type: boolean
+      required:
+        - '''@id'''
+        - id
+        - title
+        - image
+        - description
+        - type
+        - action
+        - is_hidden
+      additionalProperties: false
+      title: IInterestingRelease
+      type: object
+
+    # -- Comments
+    ICommentRelease:
+      type: object
+      properties:
+        id:
+          title: IBaseComment.id
+          type: integer
+        message:
+          title: IBaseComment.message
+          type: string
+        timestamp:
+          title: IBaseComment.timestamp
+          type: integer
+        type:
+          title: IBaseComment.type
+          type: integer
+        vote:
+          title: IBaseComment.vote
+          type: integer
+        profile:
+          "$ref": "#/components/schemas/IProfileShort"
+        parent_comment_id:
+          title: IBaseComment.parent_comment_id
+          type: integer
+        vote_count:
+          title: IBaseComment.vote_count
+          type: integer
+        likes_count:
+          title: IBaseComment.likes_count
+          type: integer
+        is_spoiler:
+          title: IBaseComment.is_spoiler
+          type: boolean
+        is_edited:
+          title: IBaseComment.is_edited
+          type: boolean
+        is_deleted:
+          title: IBaseComment.is_deleted
+          type: boolean
+        is_reply:
+          title: IBaseComment.is_reply
+          type: boolean
+        reply_count:
+          title: IBaseComment.reply_count
+          type: integer
+        can_like:
+          title: IBaseComment.can_like
+          type: boolean
+        release:
+          "$ref": "#/components/schemas/IRelease"
+      required:
+        - id
+        - message
+        - timestamp
+        - type
+        - vote
+        - profile
+        - parent_comment_id
+        - vote_count
+        - likes_count
+        - is_spoiler
+        - is_edited
+        - is_deleted
+        - is_reply
+        - reply_count
+        - can_like
+        - release
+      additionalProperties: false
+
+  securitySchemes:
+    token:
+      type: apiKey
+      in: query
+      name: token
