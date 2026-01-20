@@ -1,0 +1,118 @@
+openapi: 3.0.0
+info:
+  title: Converted from response.yaml with typeconv
+  version: '1'
+  x-id: response.yaml
+  x-comment: >-
+    Generated from src/types/response.ts by core-types-json-schema
+    (https://github.com/grantila/core-types-json-schema) on behalf of typeconv
+    (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    IScheduleResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - properties:
+            monday:
+              items: {}
+              type: array
+            tuesday:
+              items: {}
+              type: array
+            wednesday:
+              items: {}
+              type: array
+            thursday:
+              items: {}
+              type: array
+            friday:
+              items: {}
+              type: array
+            saturday:
+              items: {}
+              type: array
+            sunday:
+              items: {}
+              type: array
+          required:
+            - monday
+            - tuesday
+            - wednesday
+            - thursday
+            - friday
+            - saturday
+            - sunday
+          additionalProperties: false
+          type: object
+    ITypeResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - properties:
+            types:
+              items: {}
+              type: array
+          required:
+            - types
+          additionalProperties: false
+          type: object
+    IBaseComment:
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: integer
+        type:
+          type: integer
+        vote:
+          type: integer
+        profile:
+          $ref: '#/components/schemas/IProfileShort'
+        parent_comment_id:
+          type: integer
+        vote_count:
+          type: integer
+        likes_count:
+          type: integer
+        is_spoiler:
+          type: boolean
+        is_edited:
+          type: boolean
+        is_deleted:
+          type: boolean
+        is_reply:
+          type: boolean
+        reply_count:
+          type: integer
+        can_like:
+          type: boolean
+      required:
+        - id
+        - message
+        - timestamp
+        - type
+        - vote
+        - profile
+        - parent_comment_id
+        - vote_count
+        - likes_count
+        - is_spoiler
+        - is_edited
+        - is_deleted
+        - is_reply
+        - reply_count
+        - can_like
+      additionalProperties: false
+      type: object
+    IUrlResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - properties:
+            url:
+              type: string
+          required:
+            - url
+          additionalProperties: false
+          type: object

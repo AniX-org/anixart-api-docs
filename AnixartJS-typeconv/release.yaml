@@ -1,0 +1,887 @@
+openapi: 3.0.0
+info:
+  title: Converted from release.yaml with typeconv
+  version: '1'
+  x-id: release.yaml
+  x-comment: >-
+    Generated from src/types/release.ts by core-types-json-schema
+    (https://github.com/grantila/core-types-json-schema) on behalf of typeconv
+    (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    ICommentRepliesRequest:
+      properties:
+        id:
+          type: integer
+        sort:
+          type: integer
+      required:
+        - id
+        - sort
+      additionalProperties: false
+      type: object
+    IVideoReleaseInCategoryRequest:
+      properties:
+        id:
+          type: integer
+        categoryId:
+          type: integer
+      required:
+        - id
+        - categoryId
+      additionalProperties: false
+      type: object
+    IReleaseFilterRequest:
+      properties:
+        category_id:
+          type: integer
+        country:
+          type: string
+        end_year:
+          type: integer
+        episode_duration_from:
+          type: integer
+        episode_duration_to:
+          type: integer
+        episodes_from:
+          type: integer
+        episodes_to:
+          type: integer
+        is_genres_exclude_mode_enabled:
+          type: boolean
+        season:
+          type: integer
+        start_year:
+          type: integer
+        status_id:
+          type: integer
+        studio:
+          type: string
+        sort: {}
+        genres:
+          items:
+            type: string
+          type: array
+        profile_list_exclusions:
+          items:
+            type: integer
+          type: array
+        types:
+          items:
+            type: integer
+          type: array
+        age_ratings:
+          items:
+            type: integer
+          type: array
+        source:
+          type: string
+      additionalProperties: false
+      type: object
+    IReleaseFilterResponse:
+      additionalProperties: false
+      type: object
+    IReleaseCategory:
+      properties:
+        id: {}
+        name:
+          type: string
+      required:
+        - id
+        - name
+      additionalProperties: false
+      type: object
+    IReleaseStatus:
+      properties:
+        id: {}
+        name:
+          type: string
+      required:
+        - id
+        - name
+      additionalProperties: false
+      type: object
+    IRelated:
+      properties:
+        description:
+          type: string
+        id:
+          type: integer
+        image:
+          type: string
+        images:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+        name_ru:
+          type: string
+        release_count:
+          type: integer
+      required:
+        - description
+        - id
+        - image
+        - images
+        - name
+        - name_ru
+        - release_count
+      additionalProperties: false
+      type: object
+    IEpisodeLastUpdate:
+      properties:
+        lastEpisodeTypeUpdateName:
+          type: string
+        last_episode_source_update_id:
+          type: integer
+        last_episode_source_update_name:
+          type: string
+        last_episode_type_update_id:
+          type: integer
+        last_episode_update_date:
+          type: integer
+        last_episode_update_name:
+          type: string
+      required:
+        - lastEpisodeTypeUpdateName
+        - last_episode_source_update_id
+        - last_episode_source_update_name
+        - last_episode_type_update_id
+        - last_episode_update_date
+        - last_episode_update_name
+      additionalProperties: false
+      type: object
+    IRelease:
+      properties:
+        '''@id''':
+          type: integer
+        id:
+          type: integer
+        poster:
+          type: string
+        image:
+          type: string
+        year:
+          type: string
+        genres:
+          type: string
+        country:
+          type: string
+        director:
+          type: string
+        author:
+          type: string
+        translators:
+          type: string
+        studio:
+          type: string
+        description:
+          type: string
+        note:
+          nullable: true
+          type: string
+        related:
+          $ref: '#/components/schemas/IRelated'
+        category:
+          $ref: '#/components/schemas/IReleaseCategory'
+        rating:
+          type: integer
+        grade:
+          type: integer
+        status:
+          $ref: '#/components/schemas/IReleaseStatus'
+        duration:
+          type: integer
+        season:
+          type: integer
+        broadcast:
+          type: integer
+        screenshots:
+          items:
+            type: string
+          type: array
+        comments:
+          items:
+            $ref: '#/components/schemas/ICommentRelease'
+          type: array
+        title_original:
+          type: string
+        title_ru:
+          type: string
+        title_alt:
+          type: string
+        episodes_released:
+          type: integer
+        episodes_total:
+          type: integer
+        release_date:
+          type: string
+        vote_1_count:
+          type: integer
+        vote_2_count:
+          type: integer
+        vote_3_count:
+          type: integer
+        vote_4_count:
+          type: integer
+        vote_5_count:
+          type: integer
+        vote_count:
+          type: integer
+        creation_date:
+          type: integer
+        last_update_date:
+          type: integer
+        aired_on_date:
+          type: integer
+        favorites_count:
+          type: integer
+        watching_count:
+          type: integer
+        plan_count:
+          type: integer
+        completed_count:
+          type: integer
+        hold_on_count:
+          type: integer
+        dropped_count:
+          type: integer
+        is_adult:
+          type: boolean
+        is_play_disabled:
+          type: boolean
+        is_tpp_disabled:
+          type: boolean
+        can_video_appeal:
+          type: boolean
+        can_torlook_search:
+          type: boolean
+        is_deleted:
+          type: boolean
+        age_rating:
+          type: integer
+        your_vote:
+          type: integer
+        related_count:
+          type: integer
+        comment_count:
+          type: integer
+        comments_count:
+          type: integer
+        collection_count:
+          type: integer
+        profile_list_status:
+          type: integer
+        status_id:
+          type: integer
+        last_view_timestamp:
+          type: integer
+        last_view_episode:
+          $ref: '#/components/schemas/IEpisode'
+        is_viewed:
+          type: boolean
+        is_favorite:
+          type: boolean
+        is_view_blocked:
+          type: boolean
+        screenshot_images:
+          items:
+            type: string
+          type: array
+        related_releases:
+          items:
+            $ref: '#/components/schemas/IRelease'
+          type: array
+        recommended_releases:
+          items:
+            $ref: '#/components/schemas/IRelease'
+          type: array
+        episode_last_update:
+          $ref: '#/components/schemas/IEpisodeLastUpdate'
+        comment_per_day_count:
+          type: integer
+        video_banners:
+          items:
+            $ref: '#/components/schemas/IVideoBanners'
+          type: array
+        profile_release_type_notification_preference_count:
+          type: integer
+        is_release_type_notifications_enabled:
+          type: boolean
+      required:
+        - '''@id'''
+        - id
+        - poster
+        - image
+        - year
+        - genres
+        - country
+        - director
+        - author
+        - translators
+        - studio
+        - description
+        - note
+        - related
+        - category
+        - rating
+        - grade
+        - status
+        - duration
+        - season
+        - broadcast
+        - screenshots
+        - comments
+        - title_original
+        - title_ru
+        - title_alt
+        - episodes_released
+        - episodes_total
+        - release_date
+        - vote_1_count
+        - vote_2_count
+        - vote_3_count
+        - vote_4_count
+        - vote_5_count
+        - vote_count
+        - creation_date
+        - last_update_date
+        - aired_on_date
+        - favorites_count
+        - watching_count
+        - plan_count
+        - completed_count
+        - hold_on_count
+        - dropped_count
+        - is_adult
+        - is_play_disabled
+        - is_tpp_disabled
+        - can_video_appeal
+        - can_torlook_search
+        - is_deleted
+        - age_rating
+        - your_vote
+        - related_count
+        - comment_count
+        - comments_count
+        - collection_count
+        - profile_list_status
+        - status_id
+        - last_view_timestamp
+        - last_view_episode
+        - is_viewed
+        - is_favorite
+        - is_view_blocked
+        - screenshot_images
+        - related_releases
+        - recommended_releases
+        - episode_last_update
+        - comment_per_day_count
+        - video_banners
+        - profile_release_type_notification_preference_count
+        - is_release_type_notifications_enabled
+      additionalProperties: false
+      type: object
+    IVoteRelease:
+      properties:
+        translation:
+          type: string
+        id:
+          type: integer
+        broadcast:
+          type: integer
+        year:
+          type: string
+        country:
+          type: string
+        duration:
+          type: integer
+        description:
+          type: string
+        image:
+          type: string
+        genres:
+          type: string
+        studio:
+          type: string
+        season:
+          type: integer
+        note:
+          nullable: true
+          type: string
+        author:
+          type: string
+        director:
+          type: string
+        rating:
+          type: integer
+        grade:
+          type: integer
+        status:
+          type: integer
+        poster:
+          type: string
+        title_original:
+          type: string
+        title_ru:
+          type: string
+        favorites_count:
+          type: integer
+        creation_date:
+          type: integer
+        last_update_date:
+          type: integer
+        is_deleted:
+          type: boolean
+        is_favorite:
+          type: boolean
+        is_viewed:
+          type: boolean
+        is_play_disabled:
+          type: boolean
+        is_adult:
+          type: boolean
+        my_vote:
+          type: integer
+        voted_at:
+          type: integer
+        episodes_released:
+          type: integer
+        episodes_total:
+          type: integer
+        release_date:
+          type: string
+        age_rating:
+          type: integer
+        profile_list_status:
+          type: integer
+      required:
+        - translation
+        - id
+        - broadcast
+        - year
+        - country
+        - duration
+        - description
+        - image
+        - genres
+        - studio
+        - season
+        - note
+        - author
+        - director
+        - rating
+        - grade
+        - status
+        - poster
+        - title_original
+        - title_ru
+        - favorites_count
+        - creation_date
+        - last_update_date
+        - is_deleted
+        - is_favorite
+        - is_viewed
+        - is_play_disabled
+        - is_adult
+        - my_vote
+        - voted_at
+        - episodes_released
+        - episodes_total
+        - release_date
+        - age_rating
+        - profile_list_status
+      additionalProperties: false
+      type: object
+    IVideo:
+      properties:
+        id:
+          type: integer
+        release:
+          anyOf:
+            - $ref: '#/components/schemas/IRelease'
+            - type: integer
+        profile: {}
+        category:
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+          required:
+            - id
+            - name
+          additionalProperties: false
+          type: object
+        hosting:
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            icon:
+              type: string
+          required:
+            - id
+            - name
+            - icon
+          additionalProperties: false
+          type: object
+        title:
+          type: string
+        image:
+          type: string
+        url:
+          type: string
+        timestamp:
+          type: integer
+        player_url:
+          type: string
+        is_favorite:
+          type: boolean
+        favorites_count:
+          type: integer
+      required:
+        - id
+        - release
+        - profile
+        - category
+        - hosting
+        - title
+        - image
+        - url
+        - timestamp
+        - player_url
+        - is_favorite
+        - favorites_count
+      additionalProperties: false
+      type: object
+    IVideoResponse:
+      properties:
+        release:
+          $ref: '#/components/schemas/IRelease'
+        blocks:
+          items:
+            $ref: '#/components/schemas/IVideo'
+          type: array
+        streaming_platforms:
+          items:
+            $ref: '#/components/schemas/IVideoStreamingPlatform'
+          type: array
+        last_videos:
+          items:
+            $ref: '#/components/schemas/IVideo'
+          type: array
+        can_appeal:
+          type: boolean
+      required:
+        - release
+        - blocks
+        - streaming_platforms
+        - last_videos
+        - can_appeal
+      additionalProperties: false
+      type: object
+    IVideoBanners:
+      properties:
+        name:
+          type: string
+        image:
+          type: string
+        value:
+          type: string
+        action_id:
+          type: integer
+        is_new:
+          type: boolean
+      required:
+        - name
+        - image
+        - value
+        - action_id
+        - is_new
+      additionalProperties: false
+      type: object
+    IVideoStreamingPlatform:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        icon:
+          type: string
+        url:
+          type: string
+        position:
+          type: integer
+      required:
+        - id
+        - name
+        - icon
+        - url
+        - position
+      additionalProperties: false
+      type: object
+    IReleaseResponse:
+      properties:
+        release:
+          $ref: '#/components/schemas/IRelease'
+      required:
+        - release
+      additionalProperties: false
+      type: object
+    ICommentReleaseRequest:
+      properties:
+        id:
+          type: integer
+        sort:
+          type: integer
+      required:
+        - id
+        - sort
+      additionalProperties: false
+      type: object
+    ICommentReleaseResponse:
+      properties:
+        comment:
+          $ref: '#/components/schemas/ICommentRelease'
+      required:
+        - comment
+      additionalProperties: false
+      type: object
+    ICommentRelease:
+      allOf:
+        - $ref: '#/components/schemas/IBaseComment'
+        - type: object
+          properties:
+            release:
+              $ref: '#/components/schemas/IRelease'
+    IDubber:
+      properties:
+        '''@id''':
+          type: integer
+        id:
+          type: integer
+        name:
+          type: string
+        icon:
+          type: string
+        workers:
+          type: string
+        is_sub:
+          type: boolean
+        episode_count:
+          type: integer
+        view_count:
+          type: integer
+        pinned:
+          type: boolean
+      required:
+        - '''@id'''
+        - id
+        - name
+        - icon
+        - workers
+        - is_sub
+        - episode_count
+        - view_count
+        - pinned
+      additionalProperties: false
+      type: object
+    IDubbersResponse:
+      properties:
+        types:
+          items:
+            $ref: '#/components/schemas/IDubber'
+          type: array
+      required:
+        - types
+      additionalProperties: false
+      type: object
+    ISource:
+      properties:
+        '''@id''':
+          type: integer
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          anyOf:
+            - $ref: '#/components/schemas/IDubber'
+            - type: integer
+        episode_count:
+          type: integer
+      required:
+        - '''@id'''
+        - id
+        - name
+        - type
+        - episode_count
+      additionalProperties: false
+      type: object
+    ISourcesResponse:
+      properties:
+        sources:
+          items:
+            $ref: '#/components/schemas/ISource'
+          type: array
+      required:
+        - sources
+      additionalProperties: false
+      type: object
+    IEpisode:
+      properties:
+        '''@id''':
+          type: integer
+        position:
+          type: integer
+        release:
+          anyOf:
+            - $ref: '#/components/schemas/IRelease'
+            - type: integer
+        source:
+          anyOf:
+            - $ref: '#/components/schemas/ISource'
+            - type: integer
+        name:
+          type: string
+        url:
+          type: string
+        iframe:
+          type: boolean
+        addedDate:
+          type: integer
+        is_filter:
+          type: boolean
+        is_watched:
+          type: boolean
+      required:
+        - '''@id'''
+        - position
+        - release
+        - source
+        - name
+        - url
+        - iframe
+        - addedDate
+        - is_filter
+        - is_watched
+      additionalProperties: false
+      type: object
+    IEpisodesResponse:
+      properties:
+        episodes:
+          items:
+            $ref: '#/components/schemas/IEpisode'
+          type: array
+      required:
+        - episodes
+      additionalProperties: false
+      type: object
+    IEpisodeResponse:
+      properties:
+        episode:
+          $ref: '#/components/schemas/IEpisode'
+      required:
+        - episode
+      additionalProperties: false
+      type: object
+    IInterestingRelease:
+      properties:
+        '''@id''':
+          type: integer
+        id:
+          type: integer
+        title:
+          type: string
+        image:
+          type: string
+        description:
+          type: string
+        type:
+          type: integer
+        action:
+          type: string
+        is_hidden:
+          type: boolean
+      required:
+        - '''@id'''
+        - id
+        - title
+        - image
+        - description
+        - type
+        - action
+        - is_hidden
+      additionalProperties: false
+      type: object
+    ILastEpisodeUpdate:
+      properties:
+        last_episode_update_date:
+          type: integer
+        last_episode_update_name:
+          type: string
+        last_episode_source_update_id:
+          type: integer
+        last_episode_source_update_name:
+          type: string
+        last_episode_type_update_id:
+          type: integer
+        lastEpisodeTypeUpdateName:
+          type: string
+      required:
+        - last_episode_update_date
+        - last_episode_update_name
+        - last_episode_source_update_id
+        - last_episode_source_update_name
+        - last_episode_type_update_id
+        - lastEpisodeTypeUpdateName
+      additionalProperties: false
+      type: object
+    IExportBookmarksResponse:
+      properties:
+        releases:
+          items:
+            $ref: '#/components/schemas/IExportRelease'
+          type: array
+      required:
+        - releases
+      additionalProperties: false
+      type: object
+    IExportRelease:
+      properties:
+        id:
+          type: integer
+        title_alt:
+          type: string
+        title_ru:
+          type: string
+        title_original:
+          type: string
+        your_vote:
+          nullable: true
+          type: integer
+        profile_list_status:
+          type: integer
+        is_favorite:
+          type: boolean
+      required:
+        - id
+        - title_alt
+        - title_ru
+        - title_original
+        - your_vote
+        - profile_list_status
+        - is_favorite
+      additionalProperties: false
+      type: object
+    IReleasesInBookmarksSearchRequest:
+      properties:
+        type: {}
+      required:
+        - type
+      additionalProperties: false
+      type: object

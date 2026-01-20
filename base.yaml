@@ -1,0 +1,470 @@
+"$schema": "https://spec.openapis.org/oas/3.1/dialect/base"
+openapi: 3.1.0
+
+info:
+  title: Anixart API
+  description: >
+    This is an unofficial OpenAPI specification of [Anixart](https://anixart-app.com) API
+
+
+    Based on Anixart 9.0 beta 9
+
+
+    Some of type definitions and endpoints are taken and converted from [AnixartJS](https://github.com/theDesConnet/AnixartJS) library
+
+
+    Made by [@Radiquum](https://wah.su/radiquum) at [@Anix-Org](https://github.com/AniX-org)
+  version: 9.0 beta 9
+
+servers:
+  - url: https://api-s.anixsekai.com
+  - url: https://api.anixsekai.com
+
+tags:
+  - name: Auth
+    description: User authentication
+  - name: Discover
+    description: Discover content
+
+paths:
+  # /auth
+  "/auth/signIn":
+    post:
+      tags:
+        - Auth
+      summary: Sign in
+      description: Sign in to account and get a token
+      operationId: authSignIn
+      parameters:
+        - $ref: "#/components/parameters/IParameterLogin"
+        - $ref: "#/components/parameters/IParameterPassword"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/ILoginResponse"
+  "/auth/signUp":
+    post:
+      tags:
+        - Auth
+      summary: Sign up
+      description: Sign up new account and get a verify code
+      operationId: authSignUp
+      parameters:
+        - $ref: "#/components/parameters/IParameterEmail"
+        - $ref: "#/components/parameters/IParameterLogin"
+        - $ref: "#/components/parameters/IParameterPassword"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/IRegisterResponse"
+  "/auth/verify":
+    post:
+      tags:
+        - Auth
+      summary: Verify sign up
+      description: verify sign up of an account and get a token
+      operationId: authVerify
+      parameters:
+        - $ref: "#/components/parameters/IParameterEmail"
+        - $ref: "#/components/parameters/IParameterLogin"
+        - $ref: "#/components/parameters/IParameterPassword"
+        - $ref: "#/components/parameters/IParameterHash"
+        - $ref: "#/components/parameters/IParameterCode"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/IRegisterVerifyResponse"
+  "/auth/restore":
+    post:
+      tags:
+        - Auth
+      summary: Restore a password
+      description: Send a verify code to restore a password
+      operationId: authRestore
+      parameters:
+        - $ref: "#/components/parameters/IParameterLogin"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/IRestoreResponse"
+  "/auth/restore/verify":
+    post:
+      tags:
+        - Auth
+      summary: verify a password reset
+      description: verify a password reset for account and get a token
+      operationId: authRestoreVerify
+      parameters:
+        - $ref: "#/components/parameters/IParameterLogin"
+        - $ref: "#/components/parameters/IParameterPassword"
+        - $ref: "#/components/parameters/IParameterHash"
+        - $ref: "#/components/parameters/IParameterCode"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/IRestoreVerifyResponse"
+  # /discover
+  "/discover/watching/{page}":
+    get:
+      tags:
+        - Discover
+      summary: Watching now
+      description: Get currently watching releases by users
+      operationId: discoverWatching
+      parameters:
+        - "$ref": "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/IReleasesPagedResponse"
+      security:
+        - token: []
+  "/discover/discussing":
+    get:
+      tags:
+        - Discover
+      summary: Most discussing releases
+      description: Get 5 currently most discussing releases by users
+      operationId: discoverDiscussing
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/IReleasesPagedResponse"
+      security:
+        - token: []
+  "/discover/recommendations/{page}":
+    get:
+      tags:
+        - Discover
+      summary: Get recommendations list
+      description: Get recommendations list. Authentication is required
+      operationId: discoverRecommendations
+      parameters:
+        - "$ref": "#/components/parameters/IParameterQueryPage"
+        - name: previous_page
+          in: query
+          description: Current page - 1, should always be set
+          required: true
+          schema:
+            type: integer
+            example: 0
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/IReleasesPagedResponse"
+      security:
+        - token: []
+  "/discover/interesting":
+    get:
+      tags:
+        - Discover
+      summary: Interesting releases
+      description: Get currently Interesting releases by users
+      operationId: discoverInteresting
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/IDiscoverInterestingResponse"
+      security:
+        - token: []
+  "/discover/comments":
+    get:
+      tags:
+        - Discover
+      summary: Get popular comments
+      description: Get 10 popular comments
+      operationId: discoverComments
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/ICommentReleasePagedResponse"
+      security:
+        - token: []
+  # /comments
+
+components:
+  responses:
+    ILoginResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/LoginResult"
+        profile:
+          "$ref": "#/components/schemas/IProfile"
+        profileToken:
+          "$ref": "#/components/schemas/IProfileToken"
+    IRegisterResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/RegisterResult"
+        hash:
+          type: string
+          example: "hash"
+        codeTimestampExpires:
+          type: integer
+    IRegisterVerifyResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/RegisterVerifyResult"
+        profile:
+          "$ref": "#/components/schemas/IProfile"
+        profileToken:
+          "$ref": "#/components/schemas/IProfileToken"
+    IRestoreResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/RestoreResult"
+        hash:
+          type: string
+          example: "hash"
+        codeTimestampExpires:
+          type: integer
+    IRestoreVerifyResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/RestoreVerifyResult"
+        profile:
+          "$ref": "#/components/schemas/IProfile"
+        profileToken:
+          "$ref": "#/components/schemas/IProfileToken"
+    IReleasesPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/IRelease"
+    IDiscoverInterestingResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/IInterestingRelease"
+    ICommentReleasePagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ICommentRelease"
+
+  schemas:
+    # -- Api Status Codes
+    DefaultResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - const: 0
+          title: Success
+          description: Everything is OK!
+        - const: 1
+          title: UnexpectedError
+          description: Something went wrong
+        - const: 401
+          title: Unauthorized
+          description: Not logged in
+        - const: 402
+          title: Ban
+          description: Temporary banned
+        - const: 403
+          title: PermBan
+          description: Permanently banned
+    LoginResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResult"
+          title: Default schemas
+        - const: 2
+          title: InvalidLogin
+        - const: 3
+          title: InvalidPassword
+    RegisterResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResult"
+        - const: 2
+          title: InvalidLogin
+        - const: 3
+          title: InvalidEmail
+        - const: 4
+          title: InvalidPassword
+        - const: 5
+          title: LoginAlreadyTaken
+        - const: 6
+          title: EmailAlreadyTaken
+        - const: 7
+          title: CodeAlreadySend
+        - const: 8
+          title: CodeCannotSend
+        - const: 9
+          title: EmailServiceDisallowed
+        - const: 10
+          title: TooManyRegistrations
+    RegisterVerifyResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResult"
+        - const: 2
+          title: InvalidLogin
+        - const: 3
+          title: InvalidEmail
+        - const: 4
+          title: InvalidPassword
+        - const: 5
+          title: LoginAlreadyTaken
+        - const: 6
+          title: EmailAlreadyTaken
+        - const: 7
+          title: CodeAlreadySend
+        - const: 8
+          title: CodeCannotSend
+        - const: 9
+          title: InvalidHash
+        - const: 10
+          title: EmailServiceDisallowed
+        - const: 11
+          title: TooManyRegistrations
+    RestoreResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResult"
+        - const: 2
+          title: ProfileNotFound
+        - const: 3
+          title: CodeAlreadySend
+        - const: 4
+          title: CodeCannotSend
+    RestoreVerifyResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResult"
+        - const: 2
+          title: ProfileNotFound
+        - const: 3
+          title: InvalidPassword
+        - const: 4
+          title: CodeInvalid
+        - const: 5
+          title: CodeExpired
+        - const: 6
+          title: InvalidHash
+    #
+    IPagedResponseBase:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResult"
+        content:
+          type: array
+        total_count:
+          type: integer
+          example: 0
+        total_page_count:
+          type: integer
+          example: 0
+        current_page:
+          type: integer
+          example: 0
+
+  parameters:
+    IParameterEmail:
+      name: email
+      in: query
+      description: account email
+      required: true
+      schema:
+        type: string
+    IParameterLogin:
+      name: login
+      in: query
+      description: account login or email
+      required: true
+      schema:
+        type: string
+    IParameterPassword:
+      name: password
+      in: query
+      description: account password
+      required: true
+      schema:
+        type: string
+    IParameterHash:
+      name: hash
+      in: query
+      description: verify hash
+      required: true
+      schema:
+        type: string
+    IParameterCode:
+      name: code
+      in: query
+      description: verify code
+      required: true
+      schema:
+        type: string
+    IParameterQueryPage:
+      name: page
+      in: path
+      description: page
+      required: true
+      schema:
+        type: integer
+        example: 0
+
+  securitySchemes:
+    token:
+      type: apiKey
+      in: query
+      name: token

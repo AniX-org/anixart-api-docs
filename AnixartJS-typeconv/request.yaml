@@ -1,0 +1,105 @@
+openapi: 3.0.0
+info:
+  title: Converted from request.yaml with typeconv
+  version: '1'
+  x-id: request.yaml
+  x-comment: >-
+    Generated from src/types/request.ts by core-types-json-schema
+    (https://github.com/grantila/core-types-json-schema) on behalf of typeconv
+    (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    IBaseRequest:
+      properties:
+        path:
+          type: string
+        json:
+          type: object
+        customBaseUrl:
+          type: string
+        bearer:
+          type: string
+        urlEncoded:
+          type: object
+        queryParams:
+          type: object
+        token:
+          type: string
+        signal: {}
+        method:
+          type: string
+        tokenRequired:
+          type: boolean
+        apiV2:
+          type: boolean
+        image:
+          properties:
+            name:
+              type: string
+            stream: {}
+            boundary:
+              type: string
+            type:
+              anyOf:
+                - enum:
+                    - file
+                  type: string
+                - enum:
+                    - image
+                  type: string
+          required:
+            - name
+            - stream
+            - type
+          additionalProperties: false
+          type: object
+      required:
+        - path
+      additionalProperties: false
+      type: object
+    IBaseApiParams:
+      properties:
+        token:
+          type: string
+        signal: {}
+      additionalProperties: false
+      type: object
+    IBaseRequestPageable:
+      properties:
+        page:
+          type: integer
+      required:
+        - page
+      additionalProperties: false
+      type: object
+    IBaseSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/IBaseRequestPageable'
+        - properties:
+            query:
+              type: string
+            searchBy:
+              type: integer
+          required:
+            - query
+            - searchBy
+          additionalProperties: false
+          type: object
+    IBaseCommentAddRequest:
+      properties:
+        parentCommentId:
+          nullable: true
+          type: integer
+        replyToProfileId:
+          nullable: true
+          type: integer
+        message:
+          type: string
+        isSpoiler:
+          type: boolean
+      required:
+        - message
+        - isSpoiler
+      additionalProperties: false
+      type: object

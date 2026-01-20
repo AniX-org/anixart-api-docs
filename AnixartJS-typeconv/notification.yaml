@@ -1,0 +1,81 @@
+openapi: 3.0.0
+info:
+  title: Converted from notification.yaml with typeconv
+  version: '1'
+  x-id: notification.yaml
+  x-comment: >-
+    Generated from src/types/notification.ts by core-types-json-schema
+    (https://github.com/grantila/core-types-json-schema) on behalf of typeconv
+    (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    INotificationCountResponse:
+      properties:
+        count:
+          type: integer
+      required:
+        - count
+      additionalProperties: false
+      type: object
+    IBaseNotification:
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        profile: {}
+        timestamp:
+          type: integer
+        is_pushed:
+          type: boolean
+        is_new:
+          type: boolean
+      required:
+        - id
+        - type
+        - profile
+        - timestamp
+        - is_pushed
+        - is_new
+      additionalProperties: false
+      type: object
+    IFriendNotification:
+      allOf:
+        - $ref: '#/components/schemas/IBaseNotification'
+        - properties:
+            status:
+              type: string
+            by_profile: {}
+          required:
+            - status
+            - by_profile
+          additionalProperties: false
+          type: object
+    IArticleNotification:
+      allOf:
+        - $ref: '#/components/schemas/IBaseNotification'
+        - properties:
+            '''@id''':
+              type: integer
+            article:
+              type: integer
+          required:
+            - '''@id'''
+            - article
+          additionalProperties: false
+          type: object
+    IRelatedReleaseNotification:
+      allOf:
+        - $ref: '#/components/schemas/IBaseNotification'
+        - properties:
+            '''@id''':
+              type: integer
+            release:
+              anyOf:
+                - type: integer
+          required:
+            - '''@id'''
+            - release
+          additionalProperties: false
+          type: object

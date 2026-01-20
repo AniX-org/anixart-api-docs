@@ -1,0 +1,562 @@
+openapi: 3.0.0
+info:
+  title: Converted from channel.yaml with typeconv
+  version: '1'
+  x-id: channel.yaml
+  x-comment: >-
+    Generated from src/types/channel.ts by core-types-json-schema
+    (https://github.com/grantila/core-types-json-schema) on behalf of typeconv
+    (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    IChannel:
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        avatar:
+          type: string
+        cover:
+          type: string
+        permission:
+          type: integer
+        article_count:
+          type: integer
+        subscriber_count:
+          type: integer
+        creation_date:
+          type: integer
+        last_update_date:
+          type: integer
+        is_blog:
+          type: boolean
+        is_commenting_enabled:
+          type: boolean
+        is_article_suggestion_enabled:
+          type: boolean
+        is_verified:
+          type: boolean
+        is_deleted:
+          type: boolean
+        blog_profile_id:
+          type: integer
+        is_subscribed:
+          type: boolean
+        is_blocked:
+          type: boolean
+        block_reason:
+          type: string
+        block_expire_date:
+          type: integer
+        is_perm_blocked:
+          type: boolean
+        is_administrator_or_higher:
+          type: boolean
+      required:
+        - id
+        - title
+        - description
+        - avatar
+        - cover
+        - permission
+        - article_count
+        - subscriber_count
+        - creation_date
+        - last_update_date
+        - is_blog
+        - is_commenting_enabled
+        - is_article_suggestion_enabled
+        - is_verified
+        - is_deleted
+        - blog_profile_id
+        - is_subscribed
+        - is_blocked
+        - block_reason
+        - block_expire_date
+        - is_perm_blocked
+        - is_administrator_or_higher
+      additionalProperties: false
+      type: object
+    IArticleUploadFileResponse:
+      properties:
+        file:
+          $ref: '#/components/schemas/IArticleImageItem'
+        success:
+          type: integer
+      required:
+        - file
+        - success
+      additionalProperties: false
+      type: object
+    IArticleSuggestionPublishResponse:
+      properties:
+        article_id:
+          type: integer
+      required:
+        - article_id
+      additionalProperties: false
+      type: object
+    IChannelCreateRequest:
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        is_article_suggestion_enabled:
+          type: boolean
+        is_commenting_enabled:
+          type: boolean
+      required:
+        - title
+        - description
+        - is_article_suggestion_enabled
+        - is_commenting_enabled
+      additionalProperties: false
+      type: object
+    ISubsciptionCountResponse:
+      properties:
+        subscription_count:
+          type: integer
+      required:
+        - subscription_count
+      additionalProperties: false
+      type: object
+    IArticleCommentResponce:
+      properties:
+        comment:
+          $ref: '#/components/schemas/IArticleComment'
+      required:
+        - comment
+      additionalProperties: false
+      type: object
+    IArticleTextBlock:
+      properties:
+        text:
+          type: string
+        text_length:
+          type: integer
+      required:
+        - text
+        - text_length
+      additionalProperties: false
+      type: object
+    IArticleHeaderBlock:
+      properties:
+        text:
+          type: string
+        text_length:
+          type: integer
+        level:
+          type: integer
+      required:
+        - text
+        - text_length
+        - level
+      additionalProperties: false
+      type: object
+    IArticleImageItem:
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+        hash:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+      required:
+        - id
+        - url
+        - hash
+        - width
+        - height
+      additionalProperties: false
+      type: object
+    IArticleImageBlock:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/IArticleImageItem'
+          type: array
+        item_count:
+          type: integer
+      required:
+        - items
+        - item_count
+      additionalProperties: false
+      type: object
+    IArticleQuoteBlock:
+      properties:
+        text:
+          type: string
+        caption:
+          type: string
+        alignment:
+          type: string
+        text_length:
+          type: integer
+        caption_length:
+          type: integer
+      required:
+        - text
+        - caption
+        - alignment
+        - text_length
+        - caption_length
+      additionalProperties: false
+      type: object
+    IArticleListBlock:
+      properties:
+        style:
+          type: string
+        items:
+          items:
+            type: string
+          type: array
+        item_count:
+          type: integer
+      required:
+        - style
+        - items
+        - item_count
+      additionalProperties: false
+      type: object
+    IArticleEmbedBlock:
+      properties:
+        url:
+          type: string
+        hash:
+          type: string
+        embed:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+        image:
+          type: string
+        title:
+          type: string
+        service:
+          type: string
+        site_name:
+          type: string
+        description:
+          type: string
+      required:
+        - url
+        - hash
+        - embed
+        - width
+        - height
+        - image
+        - title
+        - service
+        - site_name
+        - description
+      additionalProperties: false
+      type: object
+    IArticlePayloadBlock:
+      properties:
+        id:
+          type: string
+        data:
+          anyOf:
+            - $ref: '#/components/schemas/IArticleTextBlock'
+            - $ref: '#/components/schemas/IArticleImageBlock'
+            - $ref: '#/components/schemas/IArticleHeaderBlock'
+            - $ref: '#/components/schemas/IArticleQuoteBlock'
+            - $ref: '#/components/schemas/IArticleListBlock'
+            - $ref: '#/components/schemas/IArticleEmbedBlock'
+            - additionalProperties: false
+              type: object
+        name:
+          type: string
+        type:
+          type: string
+      required:
+        - id
+        - data
+        - name
+        - type
+      additionalProperties: false
+      type: object
+    IArticleCreateRequest:
+      properties:
+        is_signed:
+          type: boolean
+        repost_article_id:
+          nullable: true
+          type: integer
+        payload:
+          properties:
+            time:
+              type: integer
+            version:
+              type: string
+            blocks:
+              items:
+                $ref: '#/components/schemas/IArticlePayloadBlock'
+              type: array
+            block_count:
+              type: integer
+          required:
+            - time
+            - version
+            - blocks
+            - block_count
+          additionalProperties: false
+          type: object
+      required:
+        - is_signed
+        - repost_article_id
+        - payload
+      additionalProperties: false
+      type: object
+    IArticleSuggestionCreateRequest:
+      additionalProperties: false
+      type: object
+    IEmbedData:
+      properties:
+        success:
+          type: integer
+        hash:
+          type: string
+        site_name:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+        embed:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+        url:
+          type: string
+      required:
+        - success
+        - hash
+        - site_name
+        - title
+        - description
+        - image
+        - embed
+        - width
+        - height
+        - url
+      additionalProperties: false
+      type: object
+    IArticleCreateResponse:
+      properties:
+        article:
+          $ref: '#/components/schemas/IArticle'
+      required:
+        - article
+      additionalProperties: false
+      type: object
+    IArticle:
+      properties:
+        id:
+          type: integer
+        channel:
+          $ref: '#/components/schemas/IChannel'
+        author:
+          anyOf:
+            - nullable: true
+        payload:
+          properties:
+            time:
+              type: integer
+            blocks:
+              items:
+                $ref: '#/components/schemas/IArticlePayloadBlock'
+              type: array
+          required:
+            - time
+            - blocks
+          additionalProperties: false
+          type: object
+        vote:
+          type: integer
+        repost_article:
+          $ref: '#/components/schemas/IArticle'
+        comment_count:
+          type: integer
+        repost_count:
+          type: integer
+        vote_count:
+          type: integer
+        creation_date:
+          type: integer
+        last_update_date:
+          type: integer
+        is_deleted:
+          type: boolean
+        under_moderation_reason:
+          nullable: true
+          type: string
+        is_under_moderation:
+          type: boolean
+        contains_repost_article:
+          type: boolean
+      required:
+        - id
+        - channel
+        - author
+        - payload
+        - vote
+        - repost_article
+        - comment_count
+        - repost_count
+        - vote_count
+        - creation_date
+        - last_update_date
+        - is_deleted
+        - under_moderation_reason
+        - is_under_moderation
+        - contains_repost_article
+      additionalProperties: false
+      type: object
+    IChannelBlockManageRequest:
+      properties:
+        target_profile_id:
+          type: integer
+        is_blocked:
+          type: boolean
+        reason:
+          nullable: true
+          type: string
+        expire_date:
+          nullable: true
+          type: integer
+        is_reason_showing_enabled:
+          type: boolean
+        is_perm_blocked:
+          type: boolean
+      required:
+        - target_profile_id
+        - is_blocked
+        - reason
+        - expire_date
+        - is_reason_showing_enabled
+        - is_perm_blocked
+      additionalProperties: false
+      type: object
+    IChannelBlockInfo:
+      properties:
+        '"@id"':
+          type: integer
+        reason:
+          nullable: true
+          type: string
+        added_date:
+          type: integer
+        expire_date:
+          nullable: true
+          type: integer
+        is_reason_showing_enabled:
+          type: boolean
+        is_perm_blocked:
+          type: boolean
+      required:
+        - '"@id"'
+        - reason
+        - added_date
+        - expire_date
+        - is_reason_showing_enabled
+        - is_perm_blocked
+      additionalProperties: false
+      type: object
+    IChannelBlockInfoResponse:
+      properties:
+        channel_block:
+          anyOf:
+            - $ref: '#/components/schemas/IChannelBlockInfo'
+            - nullable: true
+      required:
+        - channel_block
+      additionalProperties: false
+      type: object
+    IChannelSearchRequest:
+      properties:
+        query:
+          type: string
+        permission:
+          type: integer
+        is_blog:
+          type: boolean
+        is_subscribed:
+          type: boolean
+      required:
+        - query
+        - is_blog
+        - is_subscribed
+      additionalProperties: false
+      type: object
+    IArticleSearchRequest:
+      properties:
+        channel_id:
+          type: integer
+      required:
+        - channel_id
+      additionalProperties: false
+      type: object
+    IArticleComment:
+      properties:
+        article:
+          $ref: '#/components/schemas/IArticle'
+      required:
+        - article
+      additionalProperties: false
+      type: object
+    IChannelMediaTokenResponse:
+      properties:
+        media_upload_token:
+          type: string
+      required:
+        - media_upload_token
+      additionalProperties: false
+      type: object
+    IFeedSearchResponse:
+      properties:
+        articles: {}
+        channels: {}
+        tags: {}
+        blogs: {}
+      required:
+        - articles
+        - channels
+        - tags
+        - blogs
+      additionalProperties: false
+      type: object
+    IChannelSubscribersSearchRequest:
+      properties:
+        channel_id:
+          type: integer
+      required:
+        - channel_id
+      additionalProperties: false
+      type: object
+    IChannelPermissionManageRequest:
+      properties:
+        target_profile_id:
+          type: integer
+        permission:
+          type: integer
+      required:
+        - target_profile_id
+        - permission
+      additionalProperties: false
+      type: object

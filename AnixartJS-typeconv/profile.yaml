@@ -1,0 +1,532 @@
+openapi: 3.0.0
+info:
+  title: Converted from profile.yaml with typeconv
+  version: "1"
+  x-id: profile.yaml
+  x-comment: >-
+    Generated from src/types/profile.ts by core-types-json-schema
+    (https://github.com/grantila/core-types-json-schema) on behalf of typeconv
+    (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    IBookmarkRequest:
+      properties:
+        filter_announce:
+          type: integer
+        id:
+          type: integer
+        type: {}
+        sort: {}
+        filter:
+          type: integer
+      required:
+        - filter_announce
+        - id
+        - type
+        - sort
+      additionalProperties: false
+      type: object
+    IProfileToken:
+      properties:
+        id:
+          type: string
+        token:
+          type: string
+      required:
+        - id
+        - token
+      additionalProperties: false
+      type: object
+    IProfile:
+      properties:
+        id:
+          type: integer
+        login:
+          type: string
+        avatar:
+          type: string
+        status:
+          type: string
+        sponsorshipExpires:
+          type: integer
+        history:
+          items:
+            "$ref": "#/components/schemas/IRelease"
+          type: array
+        votes:
+          items:
+            "$ref": "#/components/schemas/IVoteRelease"
+          type: array
+        last_activity_time:
+          type: integer
+        register_date:
+          type: integer
+        vk_page:
+          type: string
+        tg_page:
+          type: string
+        inst_page:
+          type: string
+        tt_page:
+          type: string
+        discord_page:
+          type: string
+        ban_expires:
+          type: integer
+        ban_reason:
+          type: string
+        ban_note:
+          nullable: true
+          type: string
+        privilege_level:
+          type: integer
+        watching_count:
+          type: integer
+        plan_count:
+          type: integer
+        completed_count:
+          type: integer
+        hold_on_count:
+          type: integer
+        dropped_count:
+          type: integer
+        favorite_count:
+          type: integer
+        comment_count:
+          type: integer
+        collection_count:
+          type: integer
+        video_count:
+          type: integer
+        friend_count:
+          type: integer
+        watched_episode_count:
+          type: integer
+        watched_time:
+          type: integer
+        is_private:
+          type: boolean
+        is_sponsor:
+          type: boolean
+        is_banned:
+          type: boolean
+        is_perm_banned:
+          type: boolean
+        is_bookmarks_transferred:
+          type: boolean
+        is_sponsor_transferred:
+          type: boolean
+        is_vk_bound:
+          type: boolean
+        is_google_bound:
+          type: boolean
+        is_release_type_notifications_enabled:
+          type: boolean
+        is_episode_notifications_enabled:
+          type: boolean
+        is_first_episode_notification_enabled:
+          type: boolean
+        is_related_release_notifications_enabled:
+          type: boolean
+        is_report_process_notifications_enabled:
+          type: boolean
+        is_comment_notifications_enabled:
+          type: boolean
+        is_my_collection_comment_notifications_enabled:
+          type: boolean
+        is_verified:
+          type: boolean
+        watch_dynamics:
+          items:
+            $ref: "#/components/schemas/IWatchDynamics"
+          type: array
+        friend_status:
+          type: integer
+        rating_score:
+          type: integer
+        is_blocked:
+          type: boolean
+        is_me_blocked:
+          type: boolean
+        is_stats_hidden:
+          type: boolean
+        is_counts_hidden:
+          type: boolean
+        is_social_hidden:
+          type: boolean
+        is_friend_requests_disallowed:
+          type: boolean
+        is_online:
+          type: boolean
+        roles:
+          items:
+            $ref: "#/components/schemas/IRole"
+          type: array
+        badge:
+          anyOf:
+            - $ref: "#/components/schemas/IBadge"
+            - nullable: true
+        preferred_genres:
+          items:
+            $ref: "#/components/schemas/IPreferredType"
+          type: array
+        preferred_audiences:
+          items:
+            $ref: "#/components/schemas/IPreferredType"
+          type: array
+        preferred_themes:
+          items:
+            $ref: "#/components/schemas/IPreferredType"
+          type: array
+        theme_enabled:
+          type: boolean
+        theme_gradient_start_color:
+          nullable: true
+          type: string
+        theme_gradient_end_color:
+          nullable: true
+          type: string
+        theme_gradient_angle:
+          nullable: true
+          type: string
+        theme_icon_res_name:
+          nullable: true
+          type: string
+        theme_icon_url:
+          nullable: true
+          type: string
+        theme_icon_color:
+          nullable: true
+          type: string
+        theme_icon_alpha:
+          type: integer
+        theme_icon_destiny:
+          nullable: true
+          type: string
+        theme_icon_size:
+          nullable: true
+          type: string
+        theme_animation_enabled:
+          type: boolean
+        theme_animation_speed:
+          nullable: true
+          type: string
+        theme_background_url:
+          nullable: true
+          type: string
+        theme_background_mode:
+          nullable: true
+          type: string
+        theme_background_alpha:
+          nullable: true
+          type: integer
+      required:
+        - id
+        - login
+        - avatar
+        - status
+        - sponsorshipExpires
+        - history
+        - votes
+        - last_activity_time
+        - register_date
+        - vk_page
+        - tg_page
+        - inst_page
+        - tt_page
+        - discord_page
+        - ban_expires
+        - ban_reason
+        - ban_note
+        - privilege_level
+        - watching_count
+        - plan_count
+        - completed_count
+        - hold_on_count
+        - dropped_count
+        - favorite_count
+        - comment_count
+        - collection_count
+        - video_count
+        - friend_count
+        - watched_episode_count
+        - watched_time
+        - is_private
+        - is_sponsor
+        - is_banned
+        - is_perm_banned
+        - is_bookmarks_transferred
+        - is_sponsor_transferred
+        - is_vk_bound
+        - is_google_bound
+        - is_release_type_notifications_enabled
+        - is_episode_notifications_enabled
+        - is_first_episode_notification_enabled
+        - is_related_release_notifications_enabled
+        - is_report_process_notifications_enabled
+        - is_comment_notifications_enabled
+        - is_my_collection_comment_notifications_enabled
+        - is_verified
+        - watch_dynamics
+        - friend_status
+        - rating_score
+        - is_blocked
+        - is_me_blocked
+        - is_stats_hidden
+        - is_counts_hidden
+        - is_social_hidden
+        - is_friend_requests_disallowed
+        - is_online
+        - roles
+        - badge
+        - preferred_genres
+        - preferred_audiences
+        - preferred_themes
+        - theme_enabled
+        - theme_gradient_start_color
+        - theme_gradient_end_color
+        - theme_gradient_angle
+        - theme_icon_res_name
+        - theme_icon_url
+        - theme_icon_color
+        - theme_icon_alpha
+        - theme_icon_destiny
+        - theme_icon_size
+        - theme_animation_enabled
+        - theme_animation_speed
+        - theme_background_url
+        - theme_background_mode
+        - theme_background_alpha
+      additionalProperties: false
+      type: object
+    IPreferredType:
+      properties:
+        name:
+          type: string
+        percentage:
+          type: integer
+      required:
+        - name
+        - percentage
+      additionalProperties: false
+      type: object
+    IWatchDynamics:
+      properties:
+        id:
+          type: integer
+        day:
+          type: integer
+        count:
+          type: integer
+        timestamp:
+          type: integer
+      required:
+        - id
+        - day
+        - count
+        - timestamp
+      additionalProperties: false
+      type: object
+    IRole:
+      properties:
+        color:
+          type: string
+        name:
+          type: string
+      required:
+        - color
+        - name
+      additionalProperties: false
+      type: object
+    IProfileShort:
+      properties:
+        id:
+          type: integer
+        login:
+          type: string
+        avatar:
+          type: string
+        ban_expires:
+          type: integer
+        ban_reason:
+          type: string
+        privilege_level:
+          type: integer
+        badge_id:
+          nullable: true
+          type: integer
+        badge_name:
+          nullable: true
+          type: string
+        badge_type:
+          nullable: true
+          type: integer
+        badge_url:
+          nullable: true
+          type: string
+        is_banned:
+          type: boolean
+        is_sponsor:
+          type: boolean
+        is_verified:
+          type: boolean
+        is_online:
+          type: boolean
+        friend_status:
+          type: integer
+        friend_count:
+          type: integer
+      required:
+        - id
+        - login
+        - avatar
+        - ban_expires
+        - ban_reason
+        - privilege_level
+        - badge_id
+        - badge_name
+        - badge_type
+        - badge_url
+        - is_banned
+        - is_sponsor
+        - is_verified
+        - is_online
+        - friend_status
+        - friend_count
+      additionalProperties: false
+      type: object
+    IProfileChannel:
+      properties:
+        id:
+          type: integer
+        login:
+          type: string
+        avatar:
+          type: string
+        permission_creation_date:
+          type: integer
+        permission:
+          type: integer
+        badge_name:
+          nullable: true
+          type: string
+        badge_type:
+          nullable: true
+          type: integer
+        badge_url:
+          nullable: true
+          type: string
+        is_blocked:
+          type: boolean
+        is_sponsor:
+          type: boolean
+        is_verified:
+          type: boolean
+        is_perm_blocked:
+          type: boolean
+        channel_id:
+          type: integer
+        block_reason:
+          nullable: true
+          type: string
+        block_expire_date:
+          nullable: true
+          type: integer
+      required:
+        - id
+        - login
+        - avatar
+        - permission_creation_date
+        - permission
+        - badge_name
+        - badge_type
+        - badge_url
+        - is_blocked
+        - is_sponsor
+        - is_verified
+        - is_perm_blocked
+        - channel_id
+        - block_reason
+        - block_expire_date
+      additionalProperties: false
+      type: object
+    IProfileResponse:
+      properties:
+        profile:
+          $ref: "#/components/schemas/IProfile"
+        is_my_profile:
+          type: boolean
+      required:
+        - profile
+        - is_my_profile
+      additionalProperties: false
+      type: object
+    IFriendsRequest:
+      properties:
+        id:
+          type: integer
+      required:
+        - id
+      additionalProperties: false
+      type: object
+    IBadge:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: integer
+        image_url:
+          type: string
+        timestamp:
+          type: integer
+      required:
+        - id
+        - name
+        - type
+        - image_url
+        - timestamp
+      additionalProperties: false
+      type: object
+    ISocialRequest:
+      properties:
+        vkPage:
+          type: string
+        tgPage:
+          type: string
+        instPage:
+          type: string
+        ttPage:
+          type: string
+        discordPage:
+          type: string
+      required:
+        - vkPage
+        - tgPage
+        - instPage
+        - ttPage
+        - discordPage
+      additionalProperties: false
+      type: object
+    ISocialResponse:
+      properties:
+        vk_page:
+          type: string
+        tg_page:
+          type: string
+        inst_page:
+          type: string
+        tt_page:
+          type: string
+        discord_page:
+          type: string
+      required:
+        - vk_page
+        - tg_page
+        - inst_page
+        - tt_page
+        - discord_page
+      additionalProperties: false
+      type: object

@@ -1,0 +1,97 @@
+openapi: 3.0.0
+info:
+  title: Converted from collection.yaml with typeconv
+  version: '1'
+  x-id: collection.yaml
+  x-comment: >-
+    Generated from src/types/collection.ts by core-types-json-schema
+    (https://github.com/grantila/core-types-json-schema) on behalf of typeconv
+    (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    ICollection:
+      properties:
+        '''@id''':
+          type: integer
+        id:
+          type: integer
+        creator: {}
+        title:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+        creation_date:
+          type: integer
+        last_update_date:
+          type: integer
+        comment_count:
+          type: integer
+        favorites_count:
+          type: integer
+        is_private:
+          type: boolean
+        is_deleted:
+          type: boolean
+        is_favorite:
+          type: boolean
+        releases:
+          items: {}
+          type: array
+      required:
+        - '''@id'''
+        - id
+        - creator
+        - title
+        - description
+        - image
+        - creation_date
+        - last_update_date
+        - comment_count
+        - favorites_count
+        - is_private
+        - is_deleted
+        - is_favorite
+        - releases
+      additionalProperties: false
+      type: object
+    IReleaseInCollectionRequest:
+      properties:
+        id:
+          type: integer
+        sort:
+          type: integer
+      required:
+        - id
+        - sort
+      additionalProperties: false
+      type: object
+    ICollectionCreateRequest:
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        releases:
+          items:
+            type: integer
+          type: array
+        is_private:
+          type: boolean
+      required:
+        - title
+        - description
+        - releases
+        - is_private
+      additionalProperties: false
+      type: object
+    ICollectionComment:
+      properties:
+        collection:
+          $ref: '#/components/schemas/ICollection'
+      required:
+        - collection
+      additionalProperties: false
+      type: object

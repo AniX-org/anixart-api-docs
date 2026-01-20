@@ -1,0 +1,154 @@
+openapi: 3.0.0
+info:
+  title: Converted from settings.yaml with typeconv
+  version: '1'
+  x-id: settings.yaml
+  x-comment: >-
+    Generated from src/types/settings.ts by core-types-json-schema
+    (https://github.com/grantila/core-types-json-schema) on behalf of typeconv
+    (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    IProfileSettingsResponse:
+      properties:
+        avatar:
+          type: string
+        status:
+          type: string
+        vkPage:
+          type: string
+        tgPage:
+          type: string
+        is_private:
+          type: boolean
+        isPrivate:
+          type: boolean
+        privacy_stats:
+          type: integer
+        privacy_counts:
+          type: integer
+        privacy_social:
+          type: integer
+        privacy_friend_requests:
+          type: integer
+        is_vk_bound:
+          type: boolean
+        isVkBound:
+          type: boolean
+        is_goolge_bound:
+          type: boolean
+        isGoogleBound:
+          type: boolean
+        is_login_changed:
+          type: boolean
+        isLoginChanged:
+          type: boolean
+        is_change_login_banned:
+          type: boolean
+        ban_change_login_expires:
+          type: integer
+        is_change_avatar_banned:
+          type: boolean
+        ban_change_avatar_expires:
+          type: integer
+        channel_id:
+          type: integer
+      required:
+        - avatar
+        - status
+        - vkPage
+        - tgPage
+        - is_private
+        - isPrivate
+        - privacy_stats
+        - privacy_counts
+        - privacy_social
+        - privacy_friend_requests
+        - is_vk_bound
+        - isVkBound
+        - is_goolge_bound
+        - isGoogleBound
+        - is_login_changed
+        - isLoginChanged
+        - is_change_login_banned
+        - ban_change_login_expires
+        - is_change_avatar_banned
+        - ban_change_avatar_expires
+        - channel_id
+      additionalProperties: false
+      type: object
+    IBadgesResponse:
+      properties:
+        profile: {}
+      required:
+        - profile
+      additionalProperties: false
+      type: object
+    IEmailChangeConfirmResponse:
+      properties:
+        emailHint:
+          type: string
+      required:
+        - emailHint
+      additionalProperties: false
+      type: object
+    IEmailChangeRequest:
+      properties:
+        oldEmail:
+          type: string
+        newEmail:
+          type: string
+        password:
+          type: string
+      required:
+        - oldEmail
+        - newEmail
+        - password
+      additionalProperties: false
+      type: object
+    ILoginInfoResponse:
+      properties:
+        login:
+          type: string
+        avatar:
+          type: string
+        is_change_avaliable:
+          type: boolean
+        last_change_at:
+          type: integer
+        next_change_avaliable_at:
+          type: integer
+      required:
+        - login
+        - avatar
+        - is_change_avaliable
+        - last_change_at
+        - next_change_avaliable_at
+      additionalProperties: false
+      type: object
+    INewLogin:
+      properties:
+        '''@id''':
+          type: integer
+        id:
+          type: integer
+        newLogin:
+          type: string
+        timestamp:
+          type: integer
+      required:
+        - '''@id'''
+        - id
+        - newLogin
+        - timestamp
+      additionalProperties: false
+      type: object
+    IPasswordChangeResponse:
+      properties:
+        token:
+          type: string
+      required:
+        - token
+      additionalProperties: false
+      type: object
