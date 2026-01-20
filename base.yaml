@@ -25,6 +25,8 @@ tags:
     description: User authentication
   - name: Discover
     description: Discover content
+  - name: Notification
+    description: User notifications
 
 paths:
   # /auth
@@ -210,8 +212,268 @@ paths:
                 "$ref": "#/components/responses/ICommentReleasePagedResponse"
       security:
         - token: []
-  # /comments
+  # /notification
+  "/notification/count":
+    get:
+      tags:
+        - Notification
+      summary: Count unread notifications
+      description: Get count of unread notifications
+      operationId: notificationCount
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/INotificationCountResponse"
+      security:
+        - token: []
+  "/notification/all/{page}":
+    get:
+      tags:
+        - Notification
+      summary: Get all notifications
+      description: Get all notifications
+      operationId: notificationAll
+      parameters:
+        - "$ref": "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/INotificationAllPagedResponse"
+      security:
+        - token: []
+  "/notification/friends/{page}":
+    get:
+      tags:
+        - Notification
+      summary: Get all friends notifications
+      description: Get all friends notifications
+      operationId: notificationFriends
+      parameters:
+        - "$ref": "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/IPagedResponseBase"
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          "$ref": "#/components/schemas/IFriendNotification"
+      security:
+        - token: []
+  "/notification/related/release/{page}":
+    get:
+      tags:
+        - Notification
+      summary: Get all related releases notifications
+      description: Get all related releases notifications
+      operationId: notificationRelatedRelease
+      parameters:
+        - "$ref": "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/IPagedResponseBase"
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          "$ref": "#/components/schemas/IRelatedReleaseNotification"
+      security:
+        - token: []
+  "/notification/episodes/{page}":
+    get:
+      tags:
+        - Notification
+      summary: Get all episodes notifications
+      description: Get all episodes notifications
+      operationId: notificationEpisodes
+      parameters:
+        - "$ref": "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/IPagedResponseBase"
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          "$ref": "#/components/schemas/IEpisodeNotification"
+      security:
+        - token: []
+  "/notification/releaseComments/{page}":
+    get:
+      tags:
+        - Notification
+      summary: Get all release comments notifications
+      description: Get all release comments notifications
+      operationId: notificationReleaseComments
+      parameters:
+        - "$ref": "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/IPagedResponseBase"
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+      security:
+        - token: []
+  "/notification/collectionComments/{page}":
+    get:
+      tags:
+        - Notification
+      summary: Get all collection comments notifications
+      description: Get all collection comments notifications
+      operationId: notificationCollectionComments
+      parameters:
+        - "$ref": "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/IPagedResponseBase"
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+      security:
+        - token: []
+  "/notification/articles/{page}":
+    get:
+      tags:
+        - Notification
+      summary: Get all articles notifications
+      description: Get all articles notifications
+      operationId: notificationArticles
+      parameters:
+        - "$ref": "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/IPagedResponseBase"
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          "$ref": "#/components/schemas/IArticleNotification"
+      security:
+        - token: []
+  "/notification/read":
+    get:
+      tags:
+        - Notification
+      summary: Read all notifications
+      description: Read all notifications
+      operationId: notificationRead
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    "$ref": "#/components/schemas/DefaultResult"
+      security:
+        - token: []
+  "/notification/{type}/delete/{id}":
+    get:
+      tags:
+        - Notification
+      summary: Delete a specific notifications
+      description: >
+        Delete a specific notifications
 
+
+        Note: `related/release` is not working in the docs, because of the url escaping
+      operationId: notificationDeleteOne
+      parameters:
+        - in: path
+          name: type
+          required: true
+          schema:
+            enum:
+              - friend
+              - episode
+              - releaseComment
+              - collectionComment
+              - article
+              - related/release
+            example: episode
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    "$ref": "#/components/schemas/DefaultResult"
+      security:
+        - token: []
+  "/notification/delete/all":
+    get:
+      tags:
+        - Notification
+      summary: Delete all notifications
+      description: Delete all notifications
+      operationId: notificationDelete
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    "$ref": "#/components/schemas/DefaultResult"
+      security:
+        - token: []
+##
 components:
   responses:
     ILoginResponse:
@@ -288,7 +550,27 @@ components:
               type: array
               items:
                 "$ref": "#/components/schemas/ICommentRelease"
-
+    INotificationCountResponse:
+      allOf:
+        - type: object
+          properties:
+            code:
+              "$ref": "#/components/schemas/DefaultResult"
+        - "$ref": "#/components/schemas/INotificationCountResponse"
+    INotificationAllPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                oneOf:
+                  - "$ref": "#/components/schemas/IFriendNotification"
+                  - "$ref": "#/components/schemas/IRelatedReleaseNotification"
+                  - "$ref": "#/components/schemas/IEpisodeNotification"
+                  - "$ref": "#/components/schemas/IArticleNotification"
+  ###
   schemas:
     # -- Api Status Codes
     DefaultResult:
@@ -417,7 +699,7 @@ components:
         current_page:
           type: integer
           example: 0
-
+###
   parameters:
     IParameterEmail:
       name: email

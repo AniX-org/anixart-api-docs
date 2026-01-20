@@ -46,10 +46,47 @@ components:
         - properties:
             status:
               type: string
-            by_profile: {}
+            by_profile:
+              $ref: '#/components/schemas/IProfile'
           required:
             - status
             - by_profile
+          additionalProperties: false
+          type: object
+    IEpisodeNotification:
+      allOf:
+        - $ref: '#/components/schemas/IBaseNotification'
+        - properties:
+            episode:
+              type: object
+              properties:
+                name:
+                  type: string
+                position:
+                  type: integer
+                release:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title_ru:
+                      type: string
+                    image:
+                      type: string
+                source:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    type:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+          required:
+            - episode
           additionalProperties: false
           type: object
     IArticleNotification:
