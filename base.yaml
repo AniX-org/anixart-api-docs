@@ -72,7 +72,7 @@ paths:
         Get alternative api urls
 
 
-        Also they are taken from GitHub [urls.json](https://raw.githubusercontent.com/AnixHelper/pages/refs/heads/main/urls.json) 
+        Also they are taken from GitHub [urls.json](https://raw.githubusercontent.com/AnixHelper/pages/refs/heads/main/urls.json)
       operationId: configUrls
       parameters:
         - name: version_code
@@ -233,13 +233,7 @@ paths:
       operationId: discoverRecommendations
       parameters:
         - "$ref": "#/components/parameters/IParameterQueryPage"
-        - name: previous_page
-          in: query
-          description: Current page - 1, should always be set
-          required: true
-          schema:
-            type: integer
-            example: 0
+        - "$ref": "#/components/parameters/IParameterPreviousPage"
       responses:
         "200":
           description: OK
@@ -505,12 +499,7 @@ paths:
               - article
               - related/release
             example: episode
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-            example: 1
+        - $ref: "#/components/parameters/IParameterId"
       responses:
         "200":
           description: OK
@@ -540,6 +529,152 @@ paths:
                 properties:
                   code:
                     "$ref": "#/components/schemas/DefaultResult"
+      security:
+        - token: []
+  # /collection
+  "/collection/all/{page}":
+    get:
+      tags:
+        - Collection
+      summary: Get all collections
+      description: Get all collections
+      operationId: collectionAll
+      parameters:
+        - "$ref": "#/components/parameters/IParameterQueryPage"
+        - "$ref": "#/components/parameters/IParameterPreviousPage"
+        - "$ref": "#/components/parameters/ICollectionAllSort"
+        - name: where
+          in: query
+          schema:
+            type: number
+            example: 1
+            required: false
+            description: it is always '1' on discovery page. Other values are unknown. Otherwise is omitted
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/IPagedResponseBase"
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          "$ref": "#/components/schemas/ICollection"
+      security:
+        - token: []
+  "/collection/{id}":
+    get:
+      tags:
+        - Collection
+      summary: Get a collection
+      description: Get a collection
+      operationId: getCollectionInfo
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/ICollectionResponse"
+      security:
+        - token: []
+  "/collection/{id}/releases/{page}":
+    get:
+      tags:
+        - Collection
+      summary: Get a collection releases
+      description: Get a collection releases
+      operationId: collectionReleases
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/IPagedResponseBase"
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          "$ref": "#/components/schemas/IRelease"
+      security:
+        - token: []
+  "/collectionFavorite/all/{page}":
+    get:
+      tags:
+        - Collection
+      summary: Get all favorite collections
+      description: Get all favorite collections
+      operationId: collectionFavoriteAll
+      parameters:
+        - "$ref": "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/IPagedResponseBase"
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          "$ref": "#/components/schemas/ICollection"
+      security:
+        - token: []
+  "/collectionFavorite/add/{id}":
+    get:
+      tags:
+        - Collection
+      summary: Add a collection to favorites
+      description: Add a collection to favorites
+      operationId: collectionFavoriteAdd
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    "$ref": "#/components/schemas/FavoriteCollectionAddResult"
+      security:
+        - token: []
+  "/collectionFavorite/delete/{id}":
+    get:
+      tags:
+        - Collection
+      summary: Delete a collection from favorites
+      description: Delete a collection from favorites
+      operationId: collectionFavoriteDelete
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    "$ref": "#/components/schemas/FavoriteCollectionDeleteResult"
       security:
         - token: []
 ##
@@ -791,6 +926,23 @@ components:
         should_use_mirror_urls:
           type: boolean
           example: false
+    ICollectionResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/CollectionResult"
+        collection:
+          "$ref": "#/components/schemas/ICollection"
+        watching_count:
+          type: integer
+        plan_count:
+          type: integer
+        completed_count:
+          type: integer
+        hold_on_count:
+          type: integer
+        dropped_count:
+          type: integer
   ###
   schemas:
     # -- Api Status Codes
@@ -823,8 +975,10 @@ components:
           title: Default schemas
         - const: 2
           title: InvalidLogin
+          description: InvalidLogin
         - const: 3
           title: InvalidPassword
+          description: InvalidPassword
     RegisterResult:
       type: integer
       format: integer
@@ -833,22 +987,31 @@ components:
         - "$ref": "#/components/schemas/DefaultResult"
         - const: 2
           title: InvalidLogin
+          description: InvalidLogin
         - const: 3
           title: InvalidEmail
+          description: InvalidEmail
         - const: 4
           title: InvalidPassword
+          description: InvalidPassword
         - const: 5
           title: LoginAlreadyTaken
+          description: LoginAlreadyTaken
         - const: 6
           title: EmailAlreadyTaken
+          description: EmailAlreadyTaken
         - const: 7
           title: CodeAlreadySend
+          description: CodeAlreadySend
         - const: 8
           title: CodeCannotSend
+          description: CodeCannotSend
         - const: 9
           title: EmailServiceDisallowed
+          description: EmailServiceDisallowed
         - const: 10
           title: TooManyRegistrations
+          description: TooManyRegistrations
     RegisterVerifyResult:
       type: integer
       format: integer
@@ -857,24 +1020,34 @@ components:
         - "$ref": "#/components/schemas/DefaultResult"
         - const: 2
           title: InvalidLogin
+          description: InvalidLogin
         - const: 3
           title: InvalidEmail
+          description: InvalidEmail
         - const: 4
           title: InvalidPassword
+          description: InvalidPassword
         - const: 5
           title: LoginAlreadyTaken
+          description: LoginAlreadyTaken
         - const: 6
           title: EmailAlreadyTaken
+          description: EmailAlreadyTaken
         - const: 7
           title: CodeAlreadySend
+          description: CodeAlreadySend
         - const: 8
           title: CodeCannotSend
+          description: CodeCannotSend
         - const: 9
           title: InvalidHash
+          description: InvalidHash
         - const: 10
           title: EmailServiceDisallowed
+          description: EmailServiceDisallowed
         - const: 11
           title: TooManyRegistrations
+          description: TooManyRegistrations
     RestoreResult:
       type: integer
       format: integer
@@ -883,10 +1056,13 @@ components:
         - "$ref": "#/components/schemas/DefaultResult"
         - const: 2
           title: ProfileNotFound
+          description: ProfileNotFound
         - const: 3
           title: CodeAlreadySend
+          description: CodeAlreadySend
         - const: 4
           title: CodeCannotSend
+          description: CodeCannotSend
     RestoreVerifyResult:
       type: integer
       format: integer
@@ -895,14 +1071,61 @@ components:
         - "$ref": "#/components/schemas/DefaultResult"
         - const: 2
           title: ProfileNotFound
+          description: ProfileNotFound
         - const: 3
           title: InvalidPassword
+          description: InvalidPassword
         - const: 4
           title: CodeInvalid
+          description: CodeInvalid
         - const: 5
           title: CodeExpired
+          description: CodeExpired
         - const: 6
           title: InvalidHash
+          description: InvalidHash
+    CollectionResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResult"
+          title: Default schemas
+          description: Default schemas
+        - const: 2
+          title: InvalidId
+          description: InvalidId
+        - const: 3
+          title: IsPrivate
+          description: IsPrivate
+        - const: 4
+          title: IsDeleted
+          description: IsDeleted
+    FavoriteCollectionAddResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResult"
+          title: Default schemas
+          description: Default schemas
+        - const: 2
+          title: CollectionNotFound
+          description: CollectionNotFound
+        - const: 3
+          title: CollectionAlreadyInFavorite
+          description: CollectionAlreadyInFavorite
+    FavoriteCollectionDeleteResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResult"
+          title: Default schemas
+          description: Default schemas
+        - const: 2
+          title: CollectionNotFound
+          description: CollectionNotFound
     #
     IPagedResponseBase:
       type: object
@@ -965,7 +1188,43 @@ components:
       schema:
         type: integer
         example: 0
-
+    IParameterPreviousPage:
+      name: previous_page
+      in: query
+      description: Current page - 1, should always be set
+      required: true
+      schema:
+        type: integer
+        example: -1
+    ICollectionAllSort:
+      name: sort
+      in: query
+      description: sort
+      required: true
+      schema:
+        enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+        example: episode
+        x-enumNames:
+          - All Time popular
+          - Popular this year
+          - Popular this season
+          - Popular this week
+          - Recently added
+          - Random
+    IParameterId:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+        example: 1
+  #
   securitySchemes:
     token:
       type: apiKey

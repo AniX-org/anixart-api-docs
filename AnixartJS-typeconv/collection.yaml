@@ -16,7 +16,8 @@ components:
           type: integer
         id:
           type: integer
-        creator: {}
+        creator:
+          "$ref": "#/components/schemas/IProfile"
         title:
           type: string
         description:
@@ -38,7 +39,8 @@ components:
         is_favorite:
           type: boolean
         releases:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/IRelease"
           type: array
       required:
         - '''@id'''
