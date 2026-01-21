@@ -21,6 +21,8 @@ servers:
   - url: https://api.anixsekai.com
 
 tags:
+  - name: Config
+    description: Anixart app config
   - name: Auth
     description: User authentication
   - name: Discover
@@ -29,6 +31,73 @@ tags:
     description: User notifications
 
 paths:
+  # /config
+  "/config/toggles":
+    get:
+      tags:
+        - Config
+      summary: Get toggles
+      description: Get dynamic app configuration toggles
+      operationId: configToggles
+      parameters:
+        - name: version_code
+          in: query
+          description: app version code
+          required: true
+          schema:
+            type: integer
+            example: 1
+        - name: is_beta
+          in: query
+          description: is beta version
+          required: true
+          schema:
+            type: boolean
+            example: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/IConfigTogglesResponse"
+      security:
+        - token: []
+  "/config/urls":
+    get:
+      tags:
+        - Config
+      summary: Get urls
+      description: >
+        Get alternative api urls
+
+
+        Also they are taken from GitHub [urls.json](https://raw.githubusercontent.com/AnixHelper/pages/refs/heads/main/urls.json) 
+      operationId: configUrls
+      parameters:
+        - name: version_code
+          in: query
+          description: app version code
+          required: true
+          schema:
+            type: integer
+            example: 1
+        - name: is_beta
+          in: query
+          description: is beta version
+          required: true
+          schema:
+            type: boolean
+            example: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/responses/IConfigUrlsResponse"
+      security:
+        - token: []
   # /auth
   "/auth/signIn":
     post:
@@ -570,6 +639,158 @@ components:
                   - "$ref": "#/components/schemas/IRelatedReleaseNotification"
                   - "$ref": "#/components/schemas/IEpisodeNotification"
                   - "$ref": "#/components/schemas/IArticleNotification"
+    IConfigTogglesResponse:
+      type: object
+      properties:
+        minVersionCode:
+          type: integer
+        lastVersionCode:
+          type: integer
+        whatsNew:
+          type: string
+        downloadLink:
+          type: string
+        minGPVersionCode:
+          type: integer
+        lastGPVersionCode:
+          type: integer
+        gpWhatsNew:
+          type: string
+        gpDownloadLink:
+          type: string
+        overrideGPVersion:
+          type: string
+        inAppUpdates:
+          type: boolean
+        inAppUpdatesImmediate:
+          type: boolean
+        inAppUpdatesFlexibleDelay:
+          type: integer
+        impMessageEnabled:
+          type: boolean
+        impMessageText:
+          type: string
+        impMessageBackgroundColor:
+          type: string
+        impMessageTextColor:
+          type: string
+        impMessageLink:
+          type: string
+        adBannerBlockId:
+          type: string
+        adBannerSizeType:
+          type: integer
+        adInterstitialBlockId:
+          type: string
+        adBannerDelay:
+          type: integer
+        adInterstitialDelay:
+          type: integer
+        kodikVideoLinksUrl:
+          type: string
+        kodikIframeAd:
+          type: boolean
+        sibnetRandUserAgent:
+          type: boolean
+        sibnetUserAgent:
+          type: string
+        torlookUrl:
+          type: string
+        baseUrl:
+          type: string
+        apiUrl:
+          type: string
+        apiAltUrl:
+          type: string
+        apiAltAvailable:
+          type: boolean
+        iframeEmbedUrl:
+          type: string
+        kodikAdIframeUrl:
+          type: string
+        editorUrl:
+          type: string
+        staticDomain:
+          type: string
+        sponsorshipPromotion:
+          type: boolean
+        sponsorshipText:
+          type: string
+        sponsorshipAvailable:
+          type: boolean
+        pageNoConnectionUrl:
+          type: string
+        snowfall:
+          type: boolean
+        searchBarIconUrl:
+          type: string
+        searchBarIconTint:
+          type: string
+        searchBarIconAction:
+          type: string
+        searchBarIconValue:
+          type: string
+        minBlogCreateRatingScore:
+          type: integer
+        min_blog_create_rating_score:
+          type: integer
+      required:
+        - minVersionCode
+        - lastVersionCode
+        - whatsNew
+        - downloadLink
+        - minGPVersionCode
+        - lastGPVersionCode
+        - gpWhatsNew
+        - gpDownloadLink
+        - overrideGPVersion
+        - inAppUpdates
+        - inAppUpdatesImmediate
+        - inAppUpdatesFlexibleDelay
+        - impMessageEnabled
+        - impMessageText
+        - impMessageBackgroundColor
+        - impMessageTextColor
+        - impMessageLink
+        - adBannerBlockId
+        - adBannerSizeType
+        - adInterstitialBlockId
+        - adBannerDelay
+        - adInterstitialDelay
+        - kodikVideoLinksUrl
+        - kodikIframeAd
+        - sibnetRandUserAgent
+        - sibnetUserAgent
+        - torlookUrl
+        - baseUrl
+        - apiUrl
+        - apiAltUrl
+        - apiAltAvailable
+        - iframeEmbedUrl
+        - kodikAdIframeUrl
+        - editorUrl
+        - staticDomain
+        - sponsorshipPromotion
+        - sponsorshipText
+        - sponsorshipAvailable
+        - pageNoConnectionUrl
+        - snowfall
+        - searchBarIconUrl
+        - searchBarIconTint
+        - searchBarIconAction
+        - searchBarIconValue
+        - minBlogCreateRatingScore
+        - min_blog_create_rating_score
+    IConfigUrlsResponse:
+      type: object
+      properties:
+        api_urls:
+          type: array
+          items:
+            type: string
+        should_use_mirror_urls:
+          type: boolean
+          example: false
   ###
   schemas:
     # -- Api Status Codes
@@ -699,7 +920,7 @@ components:
         current_page:
           type: integer
           example: 0
-###
+  ###
   parameters:
     IParameterEmail:
       name: email
