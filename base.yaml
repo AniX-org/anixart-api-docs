@@ -677,6 +677,58 @@ paths:
                     "$ref": "#/components/schemas/FavoriteCollectionDeleteResult"
       security:
         - token: []
+  "/collection/all/release/{id}/{page}":
+    get:
+      tags:
+        - Collection
+      summary: Get all collections that contains a release
+      description: Get all collections that contains a release
+      operationId: collectionReleases
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/IPagedResponseBase"
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          "$ref": "#/components/schemas/ICollection"
+      security:
+        - token: []
+  "/collection/all/profile/{id}/{page}":
+    get:
+      tags:
+        - Collection
+      summary: Get all collections of a user
+      description: Get all collections of a user
+      operationId: collectionProfiles
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/IPagedResponseBase"
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          "$ref": "#/components/schemas/ICollection"
+      security:
+        - token: []
 ##
 components:
   responses:
