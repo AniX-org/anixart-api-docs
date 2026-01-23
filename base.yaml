@@ -472,7 +472,7 @@ paths:
                 type: object
                 properties:
                   code:
-                    "$ref": "#/components/schemas/DefaultResult"
+                    "$ref": "#/components/schemas/DefaultResultEnum"
       security:
         - token: []
   "/notification/{type}/delete/{id}":
@@ -509,7 +509,7 @@ paths:
                 type: object
                 properties:
                   code:
-                    "$ref": "#/components/schemas/DefaultResult"
+                    "$ref": "#/components/schemas/DefaultResultEnum"
       security:
         - token: []
   "/notification/delete/all":
@@ -528,7 +528,7 @@ paths:
                 type: object
                 properties:
                   code:
-                    "$ref": "#/components/schemas/DefaultResult"
+                    "$ref": "#/components/schemas/DefaultResultEnum"
       security:
         - token: []
   # /collection
@@ -729,8 +729,110 @@ paths:
                           "$ref": "#/components/schemas/ICollection"
       security:
         - token: []
+  "/collectionMy/create":
+    post:
+      tags:
+        - Collection
+      summary: Create a collection
+      description: Create a collection
+      operationId: collectionMyCreate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ICollectionCreateRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ICollectionCreateEditResponse"
+      security:
+        - token: []
+  "/collectionMy/edit/{id}":
+    post:
+      tags:
+        - Collection
+      summary: Edit a collection
+      description: Edit a collection
+      operationId: collectionMyEdit
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ICollectionCreateRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ICollectionCreateEditResponse"
+      security:
+        - token: []
+  "/collectionMy/delete/{id}":
+    get:
+      tags:
+        - Collection
+      summary: Delete a collection
+      description: Delete a collection
+      operationId: collectionMyDelete
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ICollectionDeleteResponse"
+      security:
+        - token: []
+  "/collectionMy/release/add/{id}":
+    get:
+      tags:
+        - Collection
+      summary: Add a release to a collection
+      description: Add a release to a collection
+      operationId: collectionMyReleaseAdd
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - in: query
+          name: release_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ICollectionAddReleaseResponse"
+      security:
+        - token: []
 ##
 components:
+  requests:
+    ICollectionCreateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        releases:
+          type: array
+          items:
+            type: integer
+        is_private:
+          type: boolean
+  ###
   responses:
     ILoginResponse:
       type: object
@@ -811,7 +913,7 @@ components:
         - type: object
           properties:
             code:
-              "$ref": "#/components/schemas/DefaultResult"
+              "$ref": "#/components/schemas/DefaultResultEnum"
         - "$ref": "#/components/schemas/INotificationCountResponse"
     INotificationAllPagedResponse:
       allOf:
@@ -978,11 +1080,9 @@ components:
         should_use_mirror_urls:
           type: boolean
           example: false
-    ICollectionResponse:
+    IICollectionResponse:
       type: object
       properties:
-        code:
-          "$ref": "#/components/schemas/CollectionResult"
         collection:
           "$ref": "#/components/schemas/ICollection"
         watching_count:
@@ -995,195 +1095,259 @@ components:
           type: integer
         dropped_count:
           type: integer
-  ###
+    ICollectionResponse:
+        allOf:
+          - type: object
+            properties:
+              code:
+                "$ref": "#/components/schemas/CollectionResult"
+          - "$ref": "#/components/responses/IICollectionResponse"
+    ICollectionCreateEditResponse:
+        allOf:
+          - type: object
+            properties:
+              code:
+                "$ref": "#/components/schemas/CollectionCreateEditResult"
+          - "$ref": "#/components/responses/IICollectionResponse"
+    ICollectionDeleteResponse:
+        allOf:
+          - type: object
+            properties:
+              code:
+                "$ref": "#/components/schemas/CollectionDeleteResult"
+    ICollectionAddReleaseResponse:
+        allOf:
+          - type: object
+            properties:
+              code:
+                "$ref": "#/components/schemas/CollectionAddReleaseResult"
   schemas:
     # -- Api Status Codes
-    DefaultResult:
+    DefaultResultEnum:
       type: integer
       format: integer
       example: 0
-      oneOf:
-        - const: 0
-          title: Success
-          description: Everything is OK!
-        - const: 1
-          title: UnexpectedError
-          description: Something went wrong
-        - const: 401
-          title: Unauthorized
-          description: Not logged in
-        - const: 402
-          title: Ban
-          description: Temporary banned
-        - const: 403
-          title: PermBan
-          description: Permanently banned
+      enum:
+        - 0
+        - 1
+        - 401
+        - 402
+        - 403
+      x-enumNames:
+        - Success
+        - UnexpectedError
+        - Unauthorized
+        - Ban
+        - PermBan
     LoginResult:
       type: integer
       format: integer
       example: 0
       oneOf:
-        - "$ref": "#/components/schemas/DefaultResult"
-          title: Default schemas
-        - const: 2
-          title: InvalidLogin
-          description: InvalidLogin
-        - const: 3
-          title: InvalidPassword
-          description: InvalidPassword
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+          x-enumNames:
+            - InvalidLogin
+            - InvalidPassword
+          title: Error Codes
     RegisterResult:
       type: integer
       format: integer
       example: 0
       oneOf:
-        - "$ref": "#/components/schemas/DefaultResult"
-        - const: 2
-          title: InvalidLogin
-          description: InvalidLogin
-        - const: 3
-          title: InvalidEmail
-          description: InvalidEmail
-        - const: 4
-          title: InvalidPassword
-          description: InvalidPassword
-        - const: 5
-          title: LoginAlreadyTaken
-          description: LoginAlreadyTaken
-        - const: 6
-          title: EmailAlreadyTaken
-          description: EmailAlreadyTaken
-        - const: 7
-          title: CodeAlreadySend
-          description: CodeAlreadySend
-        - const: 8
-          title: CodeCannotSend
-          description: CodeCannotSend
-        - const: 9
-          title: EmailServiceDisallowed
-          description: EmailServiceDisallowed
-        - const: 10
-          title: TooManyRegistrations
-          description: TooManyRegistrations
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+          x-enumNames:
+            - InvalidLogin
+            - InvalidEmail
+            - InvalidPassword
+            - LoginAlreadyTaken
+            - EmailAlreadyTaken
+            - CodeAlreadySend
+            - CodeCannotSend
+            - EmailServiceDisallowed
+            - TooManyRegistrations
+          title: Error Codes
     RegisterVerifyResult:
       type: integer
       format: integer
       example: 0
       oneOf:
-        - "$ref": "#/components/schemas/DefaultResult"
-        - const: 2
-          title: InvalidLogin
-          description: InvalidLogin
-        - const: 3
-          title: InvalidEmail
-          description: InvalidEmail
-        - const: 4
-          title: InvalidPassword
-          description: InvalidPassword
-        - const: 5
-          title: LoginAlreadyTaken
-          description: LoginAlreadyTaken
-        - const: 6
-          title: EmailAlreadyTaken
-          description: EmailAlreadyTaken
-        - const: 7
-          title: CodeAlreadySend
-          description: CodeAlreadySend
-        - const: 8
-          title: CodeCannotSend
-          description: CodeCannotSend
-        - const: 9
-          title: InvalidHash
-          description: InvalidHash
-        - const: 10
-          title: EmailServiceDisallowed
-          description: EmailServiceDisallowed
-        - const: 11
-          title: TooManyRegistrations
-          description: TooManyRegistrations
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+          x-enumNames:
+            - InvalidLogin
+            - InvalidEmail
+            - InvalidPassword
+            - LoginAlreadyTaken
+            - EmailAlreadyTaken
+            - CodeAlreadySend
+            - CodeCannotSend
+            - InvalidHash
+            - EmailServiceDisallowed
+            - TooManyRegistrations
+          title: Error Codes
     RestoreResult:
       type: integer
       format: integer
       example: 0
       oneOf:
-        - "$ref": "#/components/schemas/DefaultResult"
-        - const: 2
-          title: ProfileNotFound
-          description: ProfileNotFound
-        - const: 3
-          title: CodeAlreadySend
-          description: CodeAlreadySend
-        - const: 4
-          title: CodeCannotSend
-          description: CodeCannotSend
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+            - 4
+          x-enumNames:
+            - ProfileNotFound
+            - CodeAlreadySend
+            - CodeCannotSend
+          title: Error Codes
     RestoreVerifyResult:
       type: integer
       format: integer
       example: 0
       oneOf:
-        - "$ref": "#/components/schemas/DefaultResult"
-        - const: 2
-          title: ProfileNotFound
-          description: ProfileNotFound
-        - const: 3
-          title: InvalidPassword
-          description: InvalidPassword
-        - const: 4
-          title: CodeInvalid
-          description: CodeInvalid
-        - const: 5
-          title: CodeExpired
-          description: CodeExpired
-        - const: 6
-          title: InvalidHash
-          description: InvalidHash
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+          x-enumNames:
+            - ProfileNotFound
+            - InvalidPassword
+            - CodeInvalid
+            - CodeExpired
+            - InvalidHash
+          title: Error Codes
     CollectionResult:
       type: integer
       format: integer
       example: 0
       oneOf:
-        - "$ref": "#/components/schemas/DefaultResult"
-          title: Default schemas
-          description: Default schemas
-        - const: 2
-          title: InvalidId
-          description: InvalidId
-        - const: 3
-          title: IsPrivate
-          description: IsPrivate
-        - const: 4
-          title: IsDeleted
-          description: IsDeleted
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+            - 4
+          x-enumNames:
+            - InvalidId
+            - IsPrivate
+            - IsDeleted
+          title: Error Codes
     FavoriteCollectionAddResult:
       type: integer
       format: integer
       example: 0
       oneOf:
-        - "$ref": "#/components/schemas/DefaultResult"
-          title: Default schemas
-          description: Default schemas
-        - const: 2
-          title: CollectionNotFound
-          description: CollectionNotFound
-        - const: 3
-          title: CollectionAlreadyInFavorite
-          description: CollectionAlreadyInFavorite
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+          x-enumNames:
+            - CollectionNotFound
+            - CollectionAlreadyInFavorite
+          title: Error Codes
     FavoriteCollectionDeleteResult:
       type: integer
       format: integer
       example: 0
       oneOf:
-        - "$ref": "#/components/schemas/DefaultResult"
-          title: Default schemas
-          description: Default schemas
-        - const: 2
-          title: CollectionNotFound
-          description: CollectionNotFound
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+          x-enumNames:
+            - CollectionNotFound
+          title: Error Codes
+    CollectionCreateEditResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+          x-enumNames:
+            - InvalidTitle
+            - InvalidDescription
+            - InvalidReleases
+            - CollectionLimitReached
+            - CollectionNotFound
+            - CollectionNotOwned
+            - CollectionDeleted
+            - ReleaseLimitReached
+          title: Error Codes
+    CollectionDeleteResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+            - 4
+          x-enumNames:
+            - CollectionNotFound
+            - CollectionNotOwned
+            - CollectionDeleted
+          title: Error Codes
+    CollectionAddReleaseResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+          x-enumNames:
+            - CollectionNotFound
+            - CollectionNotOwned
+            - InvalidRelease
+            - ReleaseAlreadyInCollection
+            - CollectionDeleted
+            - ReleaseLimitReached
+          title: Error Codes
     #
     IPagedResponseBase:
       type: object
       properties:
         code:
-          "$ref": "#/components/schemas/DefaultResult"
+          "$ref": "#/components/schemas/DefaultResultEnum"
         content:
           type: array
         total_count:
