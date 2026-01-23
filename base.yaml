@@ -687,6 +687,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/IParameterId"
         - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/ICollectionAllSort"
       responses:
         "200":
           description: OK
