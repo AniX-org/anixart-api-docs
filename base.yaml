@@ -737,6 +737,8 @@ paths:
       summary: Create a collection
       description: Create a collection
       operationId: collectionMyCreate
+      parameters:
+        - $ref: "#/components/parameters/IParameterUserAgentHeader"
       requestBody:
         required: true
         content:
@@ -774,6 +776,30 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/responses/ICollectionCreateEditResponse"
+      security:
+        - token: []
+  "/collectionMy/editImage/{id}":
+    post:
+      tags:
+        - Collection
+      summary: Edit a image of a collection
+      description: Edit a image of a collection
+      operationId: collectionMyEditImage
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              "$ref": "#/components/requests/IEditImageRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IEditImageResponse"
       security:
         - token: []
   "/collectionMy/delete/{id}":
@@ -817,6 +843,186 @@ paths:
                 $ref: "#/components/responses/ICollectionAddReleaseResponse"
       security:
         - token: []
+  "/collection/comment/all/{id}/{page}":
+    get:
+      tags:
+        - Collection
+      summary: Get all comments of a collection
+      description: Get all comments of a collection
+      operationId: collectionComments
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/ICommentSort"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ICommentCollectionPagedResponse"
+  "/collection/comment/{id}":
+    get:
+      tags:
+        - Collection
+      summary: Get a comment of a collection
+      description: Get a comment of a collection
+      operationId: collectionComment
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      code:
+                        "$ref": "#/components/schemas/DefaultResultEnum"
+                  - $ref: "#/components/schemas/ICollectionComment"
+  "/collection/comment/replies/{id}/{page}":
+    get:
+      tags:
+        - Collection
+      summary: Get all replies of a comment
+      description: Get all replies of a comment
+      operationId: collectionCommentReplies
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/ICommentSort"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ICommentCollectionPagedResponse"
+  "/collection/comment/votes/{id}/{page}":
+    get:
+      tags:
+        - Collection
+      summary: Get all votes of a comment
+      description: Get all votes of a comment
+      operationId: collectionCommentVotes
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/ICommentVotesSort"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ICommentVotesResponse"
+  "/collection/comment/add/{id}":
+    post:
+      tags:
+        - Collection
+      summary: Add a comment to a collection
+      description: Add a comment to a collection
+      operationId: collectionCommentAdd
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ICommentRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: "#/components/schemas/DefaultResultEnum"
+  "/collection/comment/edit/{id}":
+    post:
+      tags:
+        - Collection
+      summary: Edit a comment of a collection
+      description: Edit a comment of a collection
+      operationId: collectionCommentEdit
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ICommentEditRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: "#/components/schemas/DefaultResultEnum"
+  "/collection/comment/delete/{id}":
+    get:
+      tags:
+        - Collection
+      summary: Delete a comment from a collection
+      description: Delete a comment from a collection
+      operationId: collectionCommentDelete
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: "#/components/schemas/DefaultResultEnum"
+  "/collection/comment/vote/{id}/{vote}":
+    get:
+      tags:
+        - Collection
+      summary: (Un)Vote a comment
+      description: (Un)Vote a comment
+      operationId: collectionCommentVote
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterCommentVote"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: "#/components/schemas/DefaultResultEnum"
+  "/release/collection/{id}/random":
+    get:
+      tags:
+        - Collection
+      summary: Get a random release of a collection
+      description: Get a random release of a collection
+      operationId: releaseCollectionRandom
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IReleaseResponse"
 ##
 components:
   requests:
@@ -833,6 +1039,45 @@ components:
             type: integer
         is_private:
           type: boolean
+    IEditImageRequest:
+      type: object
+      properties:
+        image:
+          type: string
+          format: binary
+          description: The image to upload (.jpg, .png, .gif, .webp)
+        name:
+          type: string
+          example: image
+      encoding:
+        image:
+          contentType: image/jpeg, image/png, image/gif, image/webp
+        name:
+          contentType: text/plain
+    ICommentRequest:
+      type: object
+      properties:
+        parentCommentId:
+          type: integer
+          nullable: true
+          example: null
+        replyToProfileId:
+          type: integer
+          nullable: true
+          example: null
+        message:
+          type: string
+        spoiler:
+          type: boolean
+          example: false
+    ICommentEditRequest:
+      type: object
+      properties:
+        message:
+          type: string
+        spoiler:
+          type: boolean
+          example: false
   ###
   responses:
     ILoginResponse:
@@ -909,6 +1154,15 @@ components:
               type: array
               items:
                 "$ref": "#/components/schemas/ICommentRelease"
+    ICommentCollectionPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ICollectionComment"
     INotificationCountResponse:
       allOf:
         - type: object
@@ -1122,6 +1376,29 @@ components:
             properties:
               code:
                 "$ref": "#/components/schemas/CollectionAddReleaseResult"
+    ICommentVotesResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: "#/components/schemas/ICommentVote"
+    IReleaseResponse:
+        type: object
+        properties:
+          code:
+            "$ref": "#/components/schemas/DefaultResultEnum"
+          release:
+            "$ref": "#/components/schemas/IRelease"
+    IEditImageResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResultEnum"
+        image_url:
+          type: string
   schemas:
     # -- Api Status Codes
     DefaultResultEnum:
@@ -1343,6 +1620,16 @@ components:
             - CollectionDeleted
             - ReleaseLimitReached
           title: Error Codes
+    ICommentVote:
+      allOf:
+        - $ref: "#/components/schemas/IProfileShort"
+        - type: object
+          properties:
+            vote:
+              type: integer
+          required:
+            - vote
+          additionalProperties: false
     #
     IPagedResponseBase:
       type: object
@@ -1434,6 +1721,34 @@ components:
           - Popular this week
           - Recently added
           - Random
+    ICommentSort:
+      name: sort
+      in: query
+      description: sort
+      required: true
+      schema:
+        enum:
+          - 1
+          - 2
+          - 3
+        x-enumNames:
+          - Newest
+          - Oldest
+          - Popular
+    ICommentVotesSort:
+      name: sort
+      in: query
+      description: sort
+      required: true
+      schema:
+        enum:
+          - 0
+          - 1
+          - 2
+        x-enumNames:
+          - All
+          - Negative
+          - Positive
     IParameterId:
       in: path
       name: id
@@ -1441,6 +1756,26 @@ components:
       schema:
         type: integer
         example: 1
+    IParameterUserAgentHeader:
+      in: header
+      name: User-Agent
+      required: true
+      schema:
+        type: string
+        example: "AnixartApp/9.0 BETA 9-25110702 (Android 13; SDK 33; x86_64; Waydroid WayDroid x86_64 Device; en)"
+    IParameterCommentVote:
+      in: path
+      name: vote
+      required: true
+      schema:
+        type: integer
+        enum:
+          - 1
+          - 2
+        x-enumNames:
+          - Dislike
+          - Like
+        title: Vote Type
   #
   securitySchemes:
     token:

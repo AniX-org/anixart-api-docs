@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Converted from collection.yaml with typeconv
-  version: '1'
+  version: "1"
   x-id: collection.yaml
   x-comment: >-
     Generated from src/types/collection.ts by core-types-json-schema
@@ -12,7 +12,7 @@ components:
   schemas:
     ICollection:
       properties:
-        '''@id''':
+        "'@id'":
           type: integer
         id:
           type: integer
@@ -43,7 +43,7 @@ components:
             "$ref": "#/components/schemas/IRelease"
           type: array
       required:
-        - '''@id'''
+        - "'@id'"
         - id
         - creator
         - title
@@ -90,9 +90,12 @@ components:
       additionalProperties: false
       type: object
     ICollectionComment:
-      properties:
-        collection:
-          $ref: '#/components/schemas/ICollection'
+      allOf:
+        - $ref: "#/components/schemas/IBaseComment"
+        - type: object
+          properties:
+            collection:
+              $ref: "#/components/schemas/ICollection"
       required:
         - collection
       additionalProperties: false
