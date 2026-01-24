@@ -1080,6 +1080,22 @@ paths:
                 $ref: "#/components/responses/IReleasesPagedResponse"
       security:
         - token: []
+  "/type/all":
+    get:
+      tags:
+        - Filter
+      summary: Get all VoiceOver types for Filter
+      description: Get all VoiceOver types for Filter
+      operationId: getAllTypes
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ITypeAllResponse"
+      security:
+        - token: []
   # /search
 ##
 components:
@@ -1531,6 +1547,15 @@ components:
           "$ref": "#/components/schemas/DefaultResultEnum"
         image_url:
           type: string
+    ITypeAllResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResultEnum"
+        types:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FType"
   schemas:
     # -- Api Status Codes
     DefaultResultEnum:

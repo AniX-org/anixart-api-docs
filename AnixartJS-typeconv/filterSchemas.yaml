@@ -409,3 +409,24 @@ components:
         - By Rating
         - By Year
         - By Popularity
+    FType:
+      type: object
+      properties:
+        "@id":
+          type: integer
+        id:
+          type: integer
+        name:
+          type: string
+        icon:
+          type: string
+        workers:
+          type: string
+        is_sub:
+          type: boolean
+        pinned:
+          type: boolean
+        episodes_count:
+          type: integer
+        view_count:
+          type: integer
