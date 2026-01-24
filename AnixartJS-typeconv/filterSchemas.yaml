@@ -1,0 +1,411 @@
+openapi: 3.0.0
+info:
+  title: schemas for /filter endpoint
+  version: '1'
+  x-id: filterSchemas.yaml
+  x-comment: ""
+paths: {}
+components:
+  schemas:
+    FCountry:
+      enum:
+        - null
+        - Япония
+        - Китай
+        - Южная Корея
+      x-enumNames:
+        - Any
+        - Japan
+        - China
+        - South Korea
+      title: Country Filter
+    FCategoryId:
+      enum:
+        - null
+        - 1
+        - 2
+        - 3
+        - 4
+      x-enumNames:
+        - Any
+        - Series
+        - Film
+        - OVA
+        - Dorama
+      title: Category ID Filter
+    FGenres:
+      anyOf:
+        - enum:
+          # Uncategorized
+          - авангард
+          - гурман
+          - драма
+          - комедия
+          - повседневность
+          - приключения
+          - романтика
+          - сверхъестественное
+          - спорт
+          - тайна
+          - триллер
+          - ужасы
+          - фантастика
+          - фэнтези
+          - экшен
+          - эротика
+          - этти
+          title: Uncategorized
+        - enum:
+          # Audience
+          - детское
+          - дзёсей
+          - сэйнэн
+          - сёдзё
+          - сёдзё-ай
+          - сёнен
+          - сёнен-ай
+          title: Audience
+        - enum:
+          # Thematic
+          - CGDCT
+          - антропоморфизм
+          - боевые искусства
+          - вампиры
+          - взрослые персонажи
+          - видеоигры
+          - военное
+          - выживание
+          - гарем
+          - гонки
+          - городское фэнтези
+          - гэг-юмор
+          - детектив
+          - жестокость
+          - забота о детях
+          - злодейка
+          - игра с высокими ставками
+          - идолы (жен.)
+          - идолы (муж.)
+          - изобразительное искусство
+          - исполнительское искусство
+          - исторический
+          - исэкай
+          - иясикэй
+          - командный спорт
+          - космос
+          - кроссдрессинг
+          - культура отаку
+          - любовный многоугольник
+          - магическая смена пола
+          - махо-сёдзё
+          - медицина
+          - меха
+          - мифология
+          - музыка
+          - образовательное
+          - организованная преступность
+          - пародия
+          - питомцы
+          - психологическое
+          - путешествие во времени
+          - работа
+          - реверс-гарем
+          - реинкарнация
+          - романтический подтекст
+          - самураи
+          - спортивные единоборства
+          - стратегические игры
+          - супер сила
+          - удостоено наград
+          - хулиганы
+          - школа
+          - шоу-бизнес
+          title: Thematic
+    FProfileListExclusions:
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+      x-enumNames:
+        - Favorites
+        - Watching
+        - PlanToWatch
+        - Completed
+        - OnHold
+        - Dropped
+      title: Profile List Exclusions
+    FStudio:
+      enum:
+        - null
+        - A-1 Pictures
+        - A.C.G.T
+        - ACTAS, Inc
+        - ACiD FiLM
+        - AIC A.S.T.A
+        - AIC PLUS
+        - AIC Spirits
+        - AIC
+        - Animac
+        - ANIMATE
+        - Aniplex
+        - ARMS
+        - Artland
+        - ARTMIC Studios
+        - Asahi Production
+        - Asia-Do
+        - ASHI
+        - Asread
+        - Asmik Ace
+        - Aubeck
+        - BM Entertainment
+        - Bandai Visua
+        - Barnum Studio
+        - Bee Train
+        - BeSTACK
+        - Blender Foundation
+        - Bones
+        - Brains Base
+        - Bridge
+        - Cinema Citrus
+        - Chaos Project
+        - Cherry Lips
+        - David Production
+        - Daume
+        - Doumu
+        - Dax International
+        - DLE INC
+        - Digital Frontier
+        - Digital Works
+        - Diomedea
+        - DIRECTIONS Inc
+        - Dogakobo
+        - Dofus
+        - Encourage Films
+        - Feel
+        - Fifth Avenue
+        - Five Ways
+        - Fuji TV
+        - Foursome
+        - GRAM Studio
+        - G&G Entertainment
+        - Gainax
+        - GANSIS
+        - Gathering
+        - Gonzino
+        - Gonzo
+        - GoHands
+        - Green Bunny
+        - Group TAC
+        - Hal Film Maker
+        - Hasbro Studios
+        - h.m.p
+        - Himajin
+        - Hoods Entertainment
+        - Idea Factory
+        - J.C.Staff
+        - KANSAI
+        - Kaname Production
+        - Kitty Films
+        - Knack
+        - Kokusai Eigasha
+        - KSS (студия)
+        - Kyoto Animation
+        - Lemon Heart
+        - LMD
+        - Madhouse Studios
+        - Magic Bus
+        - Manglobe Inc.
+        - Manpuku Jinja
+        - MAPPA
+        - Milky
+        - Minamimachi Bugyosho
+        - Media Blasters
+        - Mook Animation
+        - Moonrock
+        - MOVIC
+        - Mushi Productions
+        - Natural High
+        - Nippon Animation
+        - Nomad
+        - Lerche
+        - OB Planning
+        - Office AO
+        - Ordet
+        - Oriental Light and Magic
+        - OLM Inc.
+        - P.A. Works
+        - Palm Studio
+        - Pastel
+        - Phoenix Entertainment
+        - Picture Magic
+        - Pink
+        - Pink Pineapple
+        - Planet
+        - Plum
+        - PPM
+        - Primastea
+        - Production I.G
+        - Project No.9
+        - Radix
+        - Rikuentai
+        - Robot
+        - Satelight
+        - Seven
+        - Seven Arcs
+        - Shaft
+        - Silver Link
+        - Shinei Animation
+        - Shogakukan Music & Digital Entertainment
+        - Soft on Demand
+        - Starchild Records
+        - Studio 9 Maiami
+        - Studio Tulip
+        - Studio 4°C
+        - Studio e.go!
+        - Studio A.P.P.P
+        - Studio Barcelona
+        - Studio Blanc
+        - Studio Comet
+        - Studio Deen
+        - Studio Fantasia
+        - Studio Flag
+        - Studio Gallop
+        - Studio Ghibli
+        - Studio Guts
+        - Studio Gokumi
+        - Studio Rikka
+        - Studio Hibari
+        - Studio Junio
+        - Studio Khara
+        - Studio Live
+        - Studio Matrix
+        - Studio Pierrot
+        - Studio Egg
+        - Sunrise
+        - Synergy SP
+        - Synergy Japan
+        - Tatsunoko Production
+        - Tele-Cartoon Japan
+        - Telecom Animation Film
+        - Tezuka Productions
+        - The Answer Studio
+        - TMS
+        - TNK
+        - Toei Animation
+        - Tokyo Kids
+        - TYO Animations
+        - Transarts
+        - Triangle Staff
+        - Trinet Entertainment
+        - Ufotable
+        - Vega Entertainment
+        - Victor Entertainment
+        - Viewworks
+        - White Fox
+        - Wonder Farm
+        - XEBEC-M2
+        - Xebec
+        - Yumeta Company
+        - Zexcs
+        - Zuiyo Eizo
+        - 8bit
+    FSource:
+      enum:
+        - null
+        - Оригинал
+        - Манга
+        - Веб-манга
+        - Енкома
+        - Ранобэ
+        - Новелла
+        - Веб-новелла
+        - Визуальная новелла
+        - Игра
+        - Карточная игра
+        - Книга
+        - Книга с картинками
+        - Музыка
+        - Радио
+        - Более одного
+        - Другое
+    FYear:
+      type: integer
+      nullable: true
+      example: null
+      minimum: 1900
+      maximum: 2100
+    FSeasonId:
+      type: integer
+      nullable: true
+      example: null
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+      x-enumNames:
+        - Winter
+        - Spring
+        - Summer
+        - Fall
+    FEpisodeCount:
+      type: integer
+      nullable: true
+      example: null
+      minimum: 1
+      maximum: 100
+    FEpisodeDuration:
+      type: integer
+      nullable: true
+      example: null
+      minimum: 1
+      maximum: 30
+    FStatusId:
+      type: integer
+      nullable: true
+      example: null
+      enum:
+        - null
+        - 1
+        - 2
+        - 3
+      x-enumNames:
+        - Any
+        - Finished
+        - Ongoing
+        - Announced
+    FAgeRating:
+      type: integer
+      nullable: true
+      example: null
+      enum:
+        - null
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+      x-enumNames:
+        - Any
+        - 0+
+        - 6+
+        - 12+
+        - 16+
+        - 18+
+    FSort:
+      type: integer
+      nullable: false
+      example: 0
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+      x-enumNames:
+        - By Added Date
+        - By Rating
+        - By Year
+        - By Popularity

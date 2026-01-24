@@ -1,2 +1,3 @@
 openapi.yaml
 .venv
+tmp_*

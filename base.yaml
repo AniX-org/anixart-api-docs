@@ -29,6 +29,10 @@ tags:
     description: Discover content
   - name: Notification
     description: User notifications
+  - name: Collection
+    description: Collections management and viewing
+  - name: Filter
+    description: Release filtering
 
 paths:
   # /config
@@ -1023,6 +1027,60 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/responses/IReleaseResponse"
+  # /filter
+  "/filter/{page}":
+    post:
+      tags:
+        - Filter
+      summary: Get releases by a filter
+      description: >
+        Get releases by a filter
+
+
+        Lists on the home page is just filters in disguise
+
+
+        **Filter values**:
+
+
+        Last = Default values
+
+
+        Ongoing = status_id: 2
+
+
+        Announced = status_id: 3
+
+
+        Finished = status_id: 1
+
+
+        Films = category_id: 2
+      operationId: getFilter
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - in: query
+          name: extended_mode
+          required: true
+          example: true
+          schema:
+            type: boolean
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/FFilterRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IReleasesPagedResponse"
+      security:
+        - token: []
+  # /search
 ##
 components:
   requests:
@@ -1078,6 +1136,80 @@ components:
         spoiler:
           type: boolean
           example: false
+    FFilterRequest:
+      properties:
+        country:
+          type: string
+          nullable: true
+          example: null
+          $ref: "#/components/schemas/FCountry"
+        category_id:
+          type: integer
+          nullable: true
+          example: null
+          $ref: "#/components/schemas/FCategoryId"
+        status_id:
+          type: integer
+          nullable: true
+          example: null
+          $ref: "#/components/schemas/FStatusId"
+        genres:
+          type: array
+          nullable: false
+          example: []
+          items:
+            $ref: "#/components/schemas/FGenres"
+        is_genres_exclude_mode_enabled:
+          type: boolean
+          nullable: false
+          example: false
+        profile_list_exclusions:
+          type: array
+          nullable: false
+          example: []
+          items:
+            $ref: "#/components/schemas/FProfileListExclusions"
+        types:
+          type: array
+          nullable: false
+          example: []
+          items:
+            type: integer
+          description: Fetched from /type/all endpoint
+        studio:
+          type: string
+          nullable: true
+          example: null
+          $ref: "#/components/schemas/FStudio"
+        source:
+          type: string
+          nullable: true
+          example: null
+          $ref: "#/components/schemas/FSource"
+        start_year:
+          type: integer
+          nullable: true
+          example: null
+          $ref: "#/components/schemas/FYear"
+        end_year:
+          type: integer
+          nullable: true
+          example: null
+          $ref: "#/components/schemas/FYear"
+        season:
+          $ref: "#/components/schemas/FSeason"
+        episodes_from:
+          $ref: "#/components/schemas/FEpisodeCount"
+        episodes_to:
+          $ref: "#/components/schemas/FEpisodeCount"
+        episode_duration_from:
+          $ref: "#/components/schemas/FEpisodeDuration"
+        episode_duration_to:
+          $ref: "#/components/schemas/FEpisodeDuration"
+        age_ratings:
+          $ref: "#/components/schemas/FAgeRating"
+        sort:
+          $ref: "#/components/schemas/FSort"
   ###
   responses:
     ILoginResponse:
