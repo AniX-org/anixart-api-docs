@@ -373,6 +373,7 @@ components:
           $ref: '#/components/schemas/IChannel'
         author:
           anyOf:
+            - $ref: '#/components/schemas/IProfile'
             - nullable: true
         payload:
           properties:
@@ -530,10 +531,21 @@ components:
       type: object
     IFeedSearchResponse:
       properties:
-        articles: {}
-        channels: {}
-        tags: {}
-        blogs: {}
+        articles:
+          $ref: "#/components/responses/ISearchArticlesPagedResponse"
+        channels:
+          $ref: "#/components/responses/ISearchChannelsPagedResponse"
+        blogs:
+          $ref: "#/components/responses/ISearchChannelsPagedResponse"
+        tags:
+          allOf:
+            - $ref: "#/components/schemas/IPagedResponseBase"
+            - type: object
+              properties:
+                content:
+                  type: array
+                  items:
+                    type: string
       required:
         - articles
         - channels

@@ -1097,6 +1097,296 @@ paths:
       security:
         - token: []
   # /search
+  "/search/profiles/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search profiles
+      description: Search profiles
+      operationId: searchProfiles
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchProfilesPagedResponse"
+      security:
+        - token: []
+  "/search/collections/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search collections
+      description: Search collections
+      operationId: searchCollections
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchCollectionsPagedResponse"
+      security:
+        - token: []
+  "/search/favoriteCollections/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search favorite collections
+      description: Search favorite collections
+      operationId: searchFavoriteCollections
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchCollectionsPagedResponse"
+      security:
+        - token: []
+  "/search/profileCollections/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search profile collections
+      description: Search profile collections
+      operationId: searchProfileCollections
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchCollectionsPagedResponse"
+      security:
+        - token: []
+  "/search/releases/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search releases
+      description: Search releases
+      operationId: searchReleases
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchReleasesRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchReleasesPagedResponse"
+      security:
+        - token: []
+  "/search/favorites/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search favorite releases
+      description: Search favorite releases
+      operationId: searchFavoriteReleases
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchReleasesPagedResponse"
+      security:
+        - token: []
+  "/search/history/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search watching history releases
+      description: Search watching history releases
+      operationId: searchHistoryReleases
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchReleasesPagedResponse"
+      security:
+        - token: []
+  "/search/profile/list/{list}/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search releases in list
+      description: Search releases in list
+      operationId: searchListReleases
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/IParameterProfileList"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchReleasesPagedResponse"
+      security:
+        - token: []
+  "/search/channels/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search channels
+      description: Search channels
+      operationId: searchListСhannels
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchChannelsPagedResponse"
+      security:
+        - token: []
+  "/search/articles/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search articles
+      description: Search articles
+      operationId: searchListArticles
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchArticlesPagedResponse"
+      security:
+        - token: []
+  "/search/feed/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search feed
+      description: Search feed
+      operationId: searchListFeed
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IFeedSearchResponse"
+      security:
+        - token: []
+  "/search/channel/{id}/subscribers/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search channel subscribers
+      description: Search channel subscribers
+      operationId: searchChannelSubscribers
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchIProfileChannelPagedResponse"
+      security:
+        - token: []
 ##
 components:
   requests:
@@ -1226,6 +1516,42 @@ components:
           $ref: "#/components/schemas/FAgeRating"
         sort:
           $ref: "#/components/schemas/FSort"
+    ISearchReleasesRequest:
+      type: object
+      properties:
+        query:
+          type: string
+        searchBy:
+          type: integer
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+          x-enumNames:
+            - Title
+            - Studio
+            - Director
+            - Author
+            - Genre
+      required:
+        - query
+        - searchBy
+    ISearchRequest:
+      type: object
+      properties:
+        query:
+          type: string
+        searchBy:
+          type: integer
+          enum:
+            - 0
+          x-enumNames:
+            - None
+      required:
+        - query
+        - searchBy
   ###
   responses:
     ILoginResponse:
@@ -1556,6 +1882,61 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FType"
+    ISearchProfilesPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/IProfile"
+    ISearchReleasesPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/IRelease"
+    ISearchCollectionsPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ICollection"
+    ISearchChannelsPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/IChannel"
+    ISearchArticlesPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/IArticle"
+    ISearchIProfileChannelPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/IProfileChannel"
+
   schemas:
     # -- Api Status Codes
     DefaultResultEnum:
@@ -1933,6 +2314,24 @@ components:
           - Dislike
           - Like
         title: Vote Type
+    IParameterProfileList:
+      in: path
+      name: list
+      required: true
+      schema:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+          x-enumNames:
+            - Watching
+            - PlanToWatch
+            - Completed
+            - OnHold
+            - Dropped
   #
   securitySchemes:
     token:
