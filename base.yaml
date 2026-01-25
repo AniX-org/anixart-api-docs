@@ -37,6 +37,8 @@ tags:
     description: Searching
   - name: Profile
     description: Profiles
+  - name: Release
+    description: Release
 
 paths:
   # /config
@@ -477,10 +479,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    "$ref": "#/components/schemas/DefaultResultEnum"
+                $ref: "#/components/responses/IDefaultResponse"
       security:
         - token: []
   "/notification/{type}/delete/{id}":
@@ -514,10 +513,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    "$ref": "#/components/schemas/DefaultResultEnum"
+                $ref: "#/components/responses/IDefaultResponse"
       security:
         - token: []
   "/notification/delete/all":
@@ -533,10 +529,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    "$ref": "#/components/schemas/DefaultResultEnum"
+                $ref: "#/components/responses/IDefaultResponse"
       security:
         - token: []
   # /collection
@@ -828,29 +821,6 @@ paths:
                 $ref: "#/components/responses/ICollectionDeleteResponse"
       security:
         - token: []
-  "/collectionMy/release/add/{id}":
-    get:
-      tags:
-        - Collection
-      summary: Add a release to a collection
-      description: Add a release to a collection
-      operationId: collectionMyReleaseAdd
-      parameters:
-        - $ref: "#/components/parameters/IParameterId"
-        - in: query
-          name: release_id
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/responses/ICollectionAddReleaseResponse"
-      security:
-        - token: []
   "/collection/comment/all/{id}/{page}":
     get:
       tags:
@@ -947,10 +917,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    $ref: "#/components/schemas/DefaultResultEnum"
+                $ref: "#/components/responses/IDefaultResponse"
   "/collection/comment/edit/{id}":
     post:
       tags:
@@ -972,10 +939,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    $ref: "#/components/schemas/DefaultResultEnum"
+                $ref: "#/components/responses/IDefaultResponse"
   "/collection/comment/delete/{id}":
     get:
       tags:
@@ -991,10 +955,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    $ref: "#/components/schemas/DefaultResultEnum"
+                $ref: "#/components/responses/IDefaultResponse"
   "/collection/comment/vote/{id}/{vote}":
     get:
       tags:
@@ -1011,10 +972,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    $ref: "#/components/schemas/DefaultResultEnum"
+                $ref: "#/components/responses/IDefaultResponse"
   "/release/collection/{id}/random":
     get:
       tags:
@@ -1502,10 +1460,148 @@ paths:
                 $ref: "#/components/responses/IReleasesPagedResponse"
       security:
         - token: []
-  "/profile/list/add/{list}/{id}":
+  "/favorite/all/{page}":
     get:
       tags:
         - Profile
+      summary: Get favorite releases
+      description: Get favorite releases
+      operationId: getOwnFavorites
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/IParameterSort"
+        - $ref: "#/components/parameters/IListParameterFilterAnnounce"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IReleasesPagedResponse"
+      security:
+        - token: []
+  "/history/{page}":
+    get:
+      tags:
+        - Profile
+      summary: Get watch history
+      description: Get watch history
+      operationId: getOwnHistory
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IReleasesPagedResponse"
+      security:
+        - token: []
+  "/profile/friend/recomendations":
+    get:
+      tags:
+        - Profile
+      summary: Get recommended friends
+      description: Get recommended friends
+      operationId: getRecomendFriends
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IProfileShortPagedResponse"
+      security:
+        - token: []
+  "/profile/friend/all/{id}/{page}":
+    get:
+      tags:
+        - Profile
+      summary: Get user friends
+      description: Get user friends
+      operationId: getProfileFriends
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IProfileShortPagedResponse"
+      security:
+        - token: []
+  "/profile/friend/requests/{type}/last":
+    get:
+      tags:
+        - Profile
+      summary: Get last friend requests
+      description: Get last friend requests
+      operationId: getLastFriendRequests
+      parameters:
+        - $ref: "#/components/parameters/IParameterFriendRequestType"
+        - in: query
+          name: count
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IProfileShortPagedResponse"
+      security:
+        - token: []
+  "/profile/friend/requests/{type}/{page}":
+    get:
+      tags:
+        - Profile
+      summary: Get all friend requests
+      description: Get all friend requests
+      operationId: getAllFriendRequests
+      parameters:
+        - $ref: "#/components/parameters/IParameterFriendRequestType"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IProfileShortPagedResponse"
+      security:
+        - token: []
+  # /Release
+  "/collectionMy/release/add/{id}":
+    get:
+      tags:
+        - Release
+      summary: Add release to collection
+      description: Add release to collection
+      operationId: collectionMyReleaseAdd
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - in: query
+          name: release_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ICollectionAddReleaseResponse"
+      security:
+        - token: []
+  "/profile/list/add/{list}/{id}":
+    get:
+      tags:
+        - Release
       summary: Add release to list
       description: Add release to list
       operationId: addToList
@@ -1518,13 +1614,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DefaultResultEnum"
+                $ref: "#/components/responses/IDefaultResponse"
       security:
         - token: []
   "/profile/list/delete/{list}/{id}":
     get:
       tags:
-        - Profile
+        - Release
       summary: Remove release from list
       description: Remove release from list
       operationId: removeFromList
@@ -1537,9 +1633,46 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DefaultResultEnum"
+                $ref: "#/components/responses/IDefaultResponse"
       security:
         - token: []
+  "/favorite/add/{id}":
+    get:
+      tags:
+        - Release
+      summary: Add release to favorites
+      description: Add release to favorites
+      operationId: addReleaseToFav
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+      security:
+        - token: []
+  "/favorite/delete/{id}":
+    get:
+      tags:
+        - Release
+      summary: Remove release from favorites
+      description: Remove release from favorites
+      operationId: removeReleaseFromFav
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+      security:
+        - token: []
+
 ##
 components:
   requests:
@@ -1707,6 +1840,13 @@ components:
         - searchBy
   ###
   responses:
+    IDefaultResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResultEnum"
+      required:
+        - code
     ILoginResponse:
       type: object
       properties:
@@ -2311,6 +2451,15 @@ components:
         is_perm_banned:
           type: boolean
           example: false
+    IProfileShortPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/IProfileShort"
   schemas:
     # -- Api Status Codes
     DefaultResultEnum:
@@ -2749,6 +2898,15 @@ components:
           - IncludeAnnounces
           - OnlyAnnounces
           - ExcludeAnnounces
+    IParameterFriendRequestType:
+      in: path
+      name: type
+      required: true
+      schema:
+        type: string
+        enum:
+          - in
+          - out
   #
   securitySchemes:
     token:
