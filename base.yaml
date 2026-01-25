@@ -1193,13 +1193,13 @@ paths:
                 $ref: "#/components/responses/ISearchCollectionsPagedResponse"
       security:
         - token: []
-  "/search/releases/{page}":
+  "/search/releases/{page}/":
     post:
       tags:
         - Search
-      summary: Search releases
-      description: Search releases
-      operationId: searchReleases
+      summary: Search releases (Api-Version v1)
+      description: Search releases, old api (Anixart 8.x.x)
+      operationId: searchReleasesV1
       parameters:
         - $ref: "#/components/parameters/IParameterQueryPage"
       requestBody:
@@ -1214,7 +1214,32 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/responses/ISearchReleasesPagedResponse"
+                $ref: "#/components/responses/ISearchReleasesV1PagedResponse"
+      security:
+        - token: []
+  "/search/releases/{page}":
+    post:
+      tags:
+        - Search
+      summary: Search releases (Api-Version v2)
+      description: Search releases, new api (Anixart 9.x.x)
+      operationId: searchReleasesV2
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/IParameterApiVersionHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ISearchReleasesRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchReleasesV2PagedResponse"
       security:
         - token: []
   "/search/favorites/{page}":
@@ -1238,7 +1263,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/responses/ISearchReleasesPagedResponse"
+                $ref: "#/components/responses/ISearchReleasesV1PagedResponse"
       security:
         - token: []
   "/search/history/{page}":
@@ -1262,7 +1287,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/responses/ISearchReleasesPagedResponse"
+                $ref: "#/components/responses/ISearchReleasesV1PagedResponse"
       security:
         - token: []
   "/search/profile/list/{list}/{page}":
@@ -1287,7 +1312,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/responses/ISearchReleasesPagedResponse"
+                $ref: "#/components/responses/ISearchReleasesV1PagedResponse"
       security:
         - token: []
   "/search/channels/{page}":
@@ -1825,31 +1850,31 @@ components:
         dropped_count:
           type: integer
     ICollectionResponse:
-        allOf:
-          - type: object
-            properties:
-              code:
-                "$ref": "#/components/schemas/CollectionResult"
-          - "$ref": "#/components/responses/IICollectionResponse"
+      allOf:
+        - type: object
+          properties:
+            code:
+              "$ref": "#/components/schemas/CollectionResult"
+        - "$ref": "#/components/responses/IICollectionResponse"
     ICollectionCreateEditResponse:
-        allOf:
-          - type: object
-            properties:
-              code:
-                "$ref": "#/components/schemas/CollectionCreateEditResult"
-          - "$ref": "#/components/responses/IICollectionResponse"
+      allOf:
+        - type: object
+          properties:
+            code:
+              "$ref": "#/components/schemas/CollectionCreateEditResult"
+        - "$ref": "#/components/responses/IICollectionResponse"
     ICollectionDeleteResponse:
-        allOf:
-          - type: object
-            properties:
-              code:
-                "$ref": "#/components/schemas/CollectionDeleteResult"
+      allOf:
+        - type: object
+          properties:
+            code:
+              "$ref": "#/components/schemas/CollectionDeleteResult"
     ICollectionAddReleaseResponse:
-        allOf:
-          - type: object
-            properties:
-              code:
-                "$ref": "#/components/schemas/CollectionAddReleaseResult"
+      allOf:
+        - type: object
+          properties:
+            code:
+              "$ref": "#/components/schemas/CollectionAddReleaseResult"
     ICommentVotesResponse:
       allOf:
         - $ref: "#/components/schemas/IPagedResponseBase"
@@ -1860,12 +1885,12 @@ components:
               items:
                 $ref: "#/components/schemas/ICommentVote"
     IReleaseResponse:
-        type: object
-        properties:
-          code:
-            "$ref": "#/components/schemas/DefaultResultEnum"
-          release:
-            "$ref": "#/components/schemas/IRelease"
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResultEnum"
+        release:
+          "$ref": "#/components/schemas/IRelease"
     IEditImageResponse:
       type: object
       properties:
@@ -1890,16 +1915,39 @@ components:
             content:
               type: array
               items:
-                "$ref": "#/components/schemas/IProfile"
-    ISearchReleasesPagedResponse:
-      allOf:
-        - $ref: "#/components/schemas/IPagedResponseBase"
-        - type: object
-          properties:
-            content:
-              type: array
-              items:
-                "$ref": "#/components/schemas/IRelease"
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  login:
+                    type: string
+                  avatar:
+                    type: string
+                  is_sponsor:
+                    type: boolean
+                  is_online:
+                    type: boolean
+                  is_verified:
+                    type: boolean
+                  badge_id:
+                    type: integer
+                  badge_name:
+                    type: string
+                  badge_type:
+                    type: integer
+                  badge_url:
+                    type: string
+                required:
+                  - id
+                  - login
+                  - avatar
+                  - is_sponsor
+                  - is_online
+                  - is_verified
+                  - badge_id
+                  - badge_name
+                  - badge_type
+                  - badge_url
     ISearchCollectionsPagedResponse:
       allOf:
         - $ref: "#/components/schemas/IPagedResponseBase"
@@ -1908,7 +1956,42 @@ components:
             content:
               type: array
               items:
-                "$ref": "#/components/schemas/ICollection"
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  image:
+                    type: string
+                  favorites_count:
+                    type: integer
+                  creation_date:
+                    type: integer
+                  last_update_date:
+                    type: integer
+                  creator_id:
+                    type: integer
+                  is_private:
+                    type: boolean
+                  is_deleted:
+                    type: boolean
+                  is_favorite:
+                    type: boolean
+                required:
+                  - id
+                  - title
+                  - description
+                  - image
+                  - favorites_count
+                  - creation_date
+                  - last_update_date
+                  - creator_id
+                  - is_private
+                  - is_deleted
+                  - is_favorite
     ISearchChannelsPagedResponse:
       allOf:
         - $ref: "#/components/schemas/IPagedResponseBase"
@@ -1936,7 +2019,150 @@ components:
               type: array
               items:
                 "$ref": "#/components/schemas/IProfileChannel"
-
+    ISearchReleasesV1PagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                type: object
+                properties:
+                  "translators":
+                    type: string
+                  "note":
+                    type: string
+                    nullable: true
+                  "id":
+                    type: integer
+                  "broadcast":
+                    type: integer
+                  "year":
+                    type: string
+                    nullable: true
+                  "country":
+                    type: string
+                    nullable: true
+                  "duration":
+                    type: integer
+                    nullable: true
+                  "source":
+                    type: string
+                    nullable: true
+                  "description":
+                    type: string
+                  "image":
+                    type: string
+                  "genres":
+                    type: string
+                  "studio":
+                    type: string
+                  "season":
+                    type: integer
+                  "author":
+                    type: string
+                  "poster":
+                    type: string
+                  "director":
+                    type: string
+                  "rating":
+                    type: integer
+                  "grade":
+                    type: number
+                  "status_id":
+                    type: integer
+                  "favorites_count":
+                    type: integer
+                  "creation_date":
+                    type: integer
+                  "last_update_date":
+                    type: integer
+                  "title_ru":
+                    type: string
+                  "title_original":
+                    type: string
+                    nullable: true
+                  "episodes_released":
+                    type: integer
+                    nullable: true
+                  "episodes_total":
+                    type: integer
+                    nullable: true
+                  "release_date":
+                    type: string
+                  "aired_on_date":
+                    type: integer
+                    nullable: true
+                  "age_rating":
+                    type: integer
+                  "profile_list_status":
+                    type: integer
+                    nullable: true
+                  "vote_count":
+                    type: integer
+                  "is_adult":
+                    type: boolean
+                  "is_play_disabled":
+                    type: boolean
+                  "is_deleted":
+                    type: boolean
+                  "is_viewed":
+                    type: boolean
+                  "is_favorite":
+                    type: boolean
+                required:
+                  - id
+                  - broadcast
+                  - year
+                  - country
+                  - duration
+                  - description
+                  - image
+                  - genres
+                  - studio
+                  - season
+                  - author
+                  - poster
+                  - director
+                  - rating
+                  - favorites_count
+                  - creation_date
+                  - last_update_date
+                  - title_ru
+                  - title_original
+                  - episodes_released
+                  - episodes_total
+                  - release_date
+                  - aired_on_date
+                  - age_rating
+                  - profile_list_status
+                  - vote_count
+                  - is_adult
+                  - is_play_disabled
+                  - is_deleted
+                  - is_viewed
+                  - is_favorite
+    ISearchReleasesV2PagedResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResultEnum"
+        related:
+          "$ref": '#/components/schemas/IRelated'
+        releases:
+          type: array
+          items:
+            "$ref": "#/components/schemas/IRelease"
+        total_count:
+          type: integer
+          example: 0
+        total_page_count:
+          type: integer
+          example: 0
+        current_page:
+          type: integer
+          example: 0
   schemas:
     # -- Api Status Codes
     DefaultResultEnum:
@@ -2319,19 +2545,26 @@ components:
       name: list
       required: true
       schema:
-          type: integer
-          enum:
-            - 1
-            - 2
-            - 3
-            - 4
-            - 5
-          x-enumNames:
-            - Watching
-            - PlanToWatch
-            - Completed
-            - OnHold
-            - Dropped
+        type: integer
+        enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+        x-enumNames:
+          - Watching
+          - PlanToWatch
+          - Completed
+          - OnHold
+          - Dropped
+    IParameterApiVersionHeader:
+      in: header
+      name: Api-Version
+      required: true
+      schema:
+        type: string
+        example: v2
   #
   securitySchemes:
     token:
