@@ -33,6 +33,10 @@ tags:
     description: Collections management and viewing
   - name: Filter
     description: Release filtering
+  - name: Search
+    description: Searching
+  - name: Profile
+    description: Profiles
 
 paths:
   # /config
@@ -1412,6 +1416,130 @@ paths:
                 $ref: "#/components/responses/ISearchIProfileChannelPagedResponse"
       security:
         - token: []
+  # /profile
+  "/profile/info":
+    get:
+      tags:
+        - Profile
+      summary: Get own profile basic info
+      description: Get own profile basic info
+      operationId: profileOwnInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IProfileInfoResponse"
+      security:
+        - token: []
+  "/profile/{id}":
+    get:
+      tags:
+        - Profile
+      summary: Get user profile
+      description: Get user profile
+      operationId: getProfile
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    "$ref": "#/components/schemas/DefaultResultEnum"
+                  profile:
+                    $ref: "#/components/schemas/IProfile"
+                  is_my_profile:
+                    type: boolean
+                    example: false
+      security:
+        - token: []
+  "/profile/list/all/{list}/{page}":
+    get:
+      tags:
+        - Profile
+      summary: Get own list
+      description: Get own list
+      operationId: getOwnProfileList
+      parameters:
+        - $ref: "#/components/parameters/IParameterProfileList"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/IParameterSort"
+        - $ref: "#/components/parameters/IListParameterFilterAnnounce"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IReleasesPagedResponse"
+      security:
+        - token: []
+  "/profile/list/all/{id}/{list}/{page}":
+    get:
+      tags:
+        - Profile
+      summary: Get user list
+      description: Get user list
+      operationId: getUserProfileList
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterProfileList"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/IParameterSort"
+        - $ref: "#/components/parameters/IListParameterFilterAnnounce"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IReleasesPagedResponse"
+      security:
+        - token: []
+  "/profile/list/add/{list}/{id}":
+    get:
+      tags:
+        - Profile
+      summary: Add release to list
+      description: Add release to list
+      operationId: addToList
+      parameters:
+        - $ref: "#/components/parameters/IParameterProfileList"
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultResultEnum"
+      security:
+        - token: []
+  "/profile/list/delete/{list}/{id}":
+    get:
+      tags:
+        - Profile
+      summary: Remove release from list
+      description: Remove release from list
+      operationId: removeFromList
+      parameters:
+        - $ref: "#/components/parameters/IParameterProfileList"
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultResultEnum"
+      security:
+        - token: []
 ##
 components:
   requests:
@@ -2163,6 +2291,26 @@ components:
         current_page:
           type: integer
           example: 0
+    IProfileInfoResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResultEnum"
+        channel_id:
+          type: integer
+          nullable: true
+        privilege_level:
+          type: integer
+        rating_score:
+          type: integer
+        sponsorship_expires:
+          type: integer
+        is_sponsor:
+          type: boolean
+          example: false
+        is_perm_banned:
+          type: boolean
+          example: false
   schemas:
     # -- Api Status Codes
     DefaultResultEnum:
@@ -2547,12 +2695,14 @@ components:
       schema:
         type: integer
         enum:
+          - 0
           - 1
           - 2
           - 3
           - 4
           - 5
         x-enumNames:
+          - NotWatching
           - Watching
           - PlanToWatch
           - Completed
@@ -2565,6 +2715,40 @@ components:
       schema:
         type: string
         example: v2
+    IParameterSort:
+      in: query
+      name: sort
+      required: true
+      schema:
+        type: integer
+        enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+        x-enumNames:
+          - NewToOldAddTime
+          - OldToNewAddTime
+          - NewToOldYear
+          - OldToNewYear
+          - AlpabetInAToZ
+          - AlpabetInZToA
+    IListParameterFilterAnnounce:
+      in: query
+      name: filter_announce
+      required: true
+      schema:
+        type: integer
+        enum:
+          - 0
+          - 1
+          - 2
+        x-enumNames:
+          - IncludeAnnounces
+          - OnlyAnnounces
+          - ExcludeAnnounces
   #
   securitySchemes:
     token:
