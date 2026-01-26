@@ -1648,6 +1648,84 @@ paths:
                   - $ref: "#/components/schemas/ISocialResponse"
       security:
         - token: []
+  "/achivement/get/{id}":
+    get:
+      tags:
+        - Profile
+      summary: Get achivement
+      description: Get achivement
+      operationId: getProfileAchivement
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+              - type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IAchivementResponse"
+      security:
+        - token: []
+  "/profile/blocklist/all/{page}":
+    get:
+      tags:
+        - Profile
+      summary: Get blocklist
+      description: Get blocklist
+      operationId: getProfileBlocklist
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IBlocklistPagedResponse"
+      security:
+        - token: []
+  "/profile/blocklist/add/{id}":
+    get:
+      tags:
+        - Profile
+      summary: Add user to blocklist
+      description: Add user to blocklist
+      operationId: addProfileToBlocklist
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IBlocklistAddResponse"
+      security:
+        - token: []
+  "/profile/blocklist/remove/{id}":
+    get:
+      tags:
+        - Profile
+      summary: Remove user from blocklist
+      description: Remove user from blocklist
+      operationId: removeProfileFromBlocklist
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+      security:
+        - token: []
   # /Release
   "/collectionMy/release/add/{id}":
     get:
@@ -2548,6 +2626,60 @@ components:
           "$ref": "#/components/schemas/SendFriendRequestResult"
         friend_status:
           "$ref": "#/components/schemas/IFriendStatus"
+    IAchivementResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/IAchivementResult"
+    IBlocklistPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  login:
+                    type: string
+                  avatar:
+                    type: string
+                  is_sponsor:
+                    type: boolean
+                  is_online:
+                    type: boolean
+                  is_verified:
+                    type: boolean
+                  badge_id:
+                    type: integer
+                  badge_name:
+                    type: string
+                  badge_type:
+                    type: integer
+                  badge_url:
+                    type: string
+                  added_date:
+                    type: integer
+                required:
+                  - id
+                  - login
+                  - avatar
+                  - is_sponsor
+                  - is_online
+                  - is_verified
+                  - badge_id
+                  - badge_name
+                  - badge_type
+                  - badge_url
+                  - added_date
+    IBlocklistAddResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/IBlocklistAddResult"
   schemas:
     # -- Api Status Codes
     DefaultResultEnum:
@@ -2832,6 +2964,30 @@ components:
           - Request_If_OwnUserId_GreaterThan_TargetUserId
           - Friends
       title: Friend Status
+    IAchivementResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+          x-enumNames:
+            - AlreadyGranted
+            - AchivementNotFound
+          title: Error Codes
+    IBlocklistAddResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+          x-enumNames:
+            - AlreadyInBlocklist
+          title: Error Codes
     #
     IPagedResponseBase:
       type: object
