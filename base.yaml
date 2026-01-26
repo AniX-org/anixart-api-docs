@@ -1574,6 +1574,80 @@ paths:
                 $ref: "#/components/responses/IProfileShortPagedResponse"
       security:
         - token: []
+  "/profile/friend/request/send/{id}":
+    get:
+      tags:
+        - Profile
+      summary: Send friend request
+      description: Send friend request
+      operationId: sendFriendRequest
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IFriendRequestResponse"
+      security:
+        - token: []
+  "/profile/friend/request/remove/{id}":
+    get:
+      tags:
+        - Profile
+      summary: Remove friend request
+      description: Remove friend request
+      operationId: removeFriendRequest
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IUnfriendRequestResponse"
+      security:
+        - token: []
+  "/profile/friend/request/hide/{id}":
+    get:
+      tags:
+        - Profile
+      summary: Hide friend request
+      description: Hide friend request
+      operationId: hideFriendRequest
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+      security:
+        - token: []
+  "/profile/social/{id}":
+    get:
+      tags:
+        - Profile
+      summary: Get user social
+      description: Get user social
+      operationId: getProfileSocial
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/responses/IDefaultResponse"
+                  - $ref: "#/components/schemas/ISocialResponse"
+      security:
+        - token: []
   # /Release
   "/collectionMy/release/add/{id}":
     get:
@@ -2460,6 +2534,20 @@ components:
               type: array
               items:
                 "$ref": "#/components/schemas/IProfileShort"
+    IFriendRequestResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/SendFriendRequestResult"
+        friend_status:
+          "$ref": "#/components/schemas/IFriendStatus"
+    IUnfriendRequestResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/SendFriendRequestResult"
+        friend_status:
+          "$ref": "#/components/schemas/IFriendStatus"
   schemas:
     # -- Api Status Codes
     DefaultResultEnum:
@@ -2691,6 +2779,59 @@ components:
           required:
             - vote
           additionalProperties: false
+    SendFriendRequestResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+          x-enumNames:
+            - RequestConfirmed
+            - RequestAlreadySent
+            - ProfileWasBlocked
+            - MyProfileWasBlocked
+            - FriendLimitReached
+            - TargetFriendLimitReached
+            - TargetFriendRequestsDisallowed
+            - FriendRequestLimitReached
+          title: Error Codes
+    SendUnfriendRequestResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+          x-enumNames:
+            - RequestRemoved
+            - FriendshipRemoved
+          title: Error Codes
+    IFriendStatus:
+      type: integer
+      format: integer
+      example: 0
+      enum:
+          - null
+          - 0
+          - 1
+          - 2
+      x-enumNames:
+          - NotFriends_OR_Error
+          - Request_If_OwnUserId_LessThan_TargetUserId
+          - Request_If_OwnUserId_GreaterThan_TargetUserId
+          - Friends
+      title: Friend Status
     #
     IPagedResponseBase:
       type: object
