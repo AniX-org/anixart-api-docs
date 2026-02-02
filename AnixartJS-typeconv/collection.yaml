@@ -100,3 +100,19 @@ components:
         - collection
       additionalProperties: false
       type: object
+    ICollectionCompact:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        image:
+          type: string
+    ICollectionCompactComment:
+      allOf:
+        - $ref: '#/components/schemas/IBaseCompactComment'
+        - type: object
+          properties:
+            collection:
+              $ref: '#/components/schemas/ICollectionCompact'

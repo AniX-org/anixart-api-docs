@@ -24,7 +24,8 @@ components:
           type: integer
         type:
           type: string
-        profile: {}
+        profile:
+          $ref: '#/components/schemas/IProfile'
         timestamp:
           type: integer
         is_pushed:
@@ -116,3 +117,21 @@ components:
             - release
           additionalProperties: false
           type: object
+    IReleaseCommentNotification:
+      allOf:
+        - $ref: '#/components/schemas/IBaseNotification'
+        - type: object
+          properties:
+            parentComment:
+              $ref: '#/components/schemas/IReleaseCompactComment'
+            comment:
+              $ref: '#/components/schemas/IReleaseCompactComment'
+    ICollectionCommentNotification:
+      allOf:
+        - $ref: '#/components/schemas/IBaseNotification'
+        - type: object
+          properties:
+            parentComment:
+              $ref: '#/components/schemas/ICollectionCompactComment'
+            comment:
+              $ref: '#/components/schemas/ICollectionCompactComment'

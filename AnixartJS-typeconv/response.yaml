@@ -116,3 +116,14 @@ components:
             - url
           additionalProperties: false
           type: object
+    IBaseCompactComment:
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+        is_spoiler:
+          type: boolean
+        profile:
+          $ref: "#/components/schemas/IProfileCompact"

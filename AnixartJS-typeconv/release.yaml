@@ -888,3 +888,19 @@ components:
         - type
       additionalProperties: false
       type: object
+    ICompactRelease:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        image:
+          type: string
+    IReleaseCompactComment:
+      allOf:
+        - $ref: '#/components/schemas/IBaseCompactComment'
+        - type: object
+          properties:
+            release:
+              $ref: '#/components/schemas/ICompactRelease'

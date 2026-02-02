@@ -418,6 +418,8 @@ paths:
                     properties:
                       content:
                         type: array
+                        items:
+                          "$ref": "#/components/schemas/IReleaseCommentNotification"
       security:
         - token: []
   "/notification/collectionComments/{page}":
@@ -441,6 +443,8 @@ paths:
                     properties:
                       content:
                         type: array
+                        items:
+                          "$ref": "#/components/schemas/ICollectionCommentNotification"
       security:
         - token: []
   "/notification/articles/{page}":
@@ -2582,6 +2586,8 @@ components:
                   - "$ref": "#/components/schemas/IRelatedReleaseNotification"
                   - "$ref": "#/components/schemas/IEpisodeNotification"
                   - "$ref": "#/components/schemas/IArticleNotification"
+                  - "$ref": "#/components/schemas/IReleaseCommentNotification"
+                  - "$ref": "#/components/schemas/ICollectionCommentNotification"
     IConfigTogglesResponse:
       type: object
       properties:

@@ -530,3 +530,12 @@ components:
         - discord_page
       additionalProperties: false
       type: object
+    IProfileCompact:
+      type: object
+      properties:
+        id:
+          type: integer
+        login:
+          type: string
+        avatar:
+          type: string
