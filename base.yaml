@@ -2168,6 +2168,38 @@ paths:
                 $ref: "#/components/responses/IReleasesPagedResponse"
       security:
         - token: []
+  "/release/streaming/platform/{id}":
+    get:
+      tags:
+        - Release
+      summary: Get streaming platforms
+      description: Get streaming platforms
+      operationId: getStreamingPlatforms
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IVideoStreamingPlatformsPagedResponse"
+  "/video/release/{id}":
+    get:
+      tags:
+        - Release
+      summary: Get videos of a release
+      description: Get videos of a release
+      operationId: getVideoOfARelease
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IVideoResponse"
   ## /episode
   "/episode/watch/{id}/{sourceId}/{episodePosition}":
     get:
@@ -3169,6 +3201,24 @@ components:
                 type: integer
               is_favorite:
                 type: boolean
+    IVideoStreamingPlatformsPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/IVideoStreamingPlatform"
+    IVideoPagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/IVideo"
   schemas:
     # -- Api Status Codes
     DefaultResultEnum:
@@ -3489,6 +3539,17 @@ components:
           x-enumNames:
             - InvalidProfileLists
             - InvalidExtraFields
+          title: Error Codes
+    IReleaseVideoResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+          x-enumNames:
+            - InvalidReleaseId
           title: Error Codes
     #
     IPagedResponseBase:

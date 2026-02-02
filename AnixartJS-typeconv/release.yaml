@@ -503,7 +503,8 @@ components:
           anyOf:
             - $ref: '#/components/schemas/IRelease'
             - type: integer
-        profile: {}
+        profile:
+            $ref: '#/components/schemas/IProfile'
         category:
           properties:
             id:
@@ -560,6 +561,8 @@ components:
       type: object
     IVideoResponse:
       properties:
+        code:
+          $ref: '#/components/schemas/IReleaseVideoResult'
         release:
           $ref: '#/components/schemas/IRelease'
         blocks:
