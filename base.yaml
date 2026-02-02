@@ -3103,7 +3103,7 @@ components:
       type: object
       properties:
         code:
-          "$ref": "#/components/schemas/SendFriendRequestResult"
+          "$ref": "#/components/schemas/SendUnfriendRequestResult"
         friend_status:
           "$ref": "#/components/schemas/IFriendStatus"
     IAchivementResponse:

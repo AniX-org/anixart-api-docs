@@ -31,7 +31,7 @@ jobs:
         run: |
           pip install -r requirements.txt
       - name: Generate OpenAPI file
-        run: python generate_openapi_file.py
+        run: python generate_openapi_file.py -c
       - name: Upload `public` folder
         uses: actions/upload-pages-artifact@v3
         with:
