@@ -1021,12 +1021,7 @@ paths:
       operationId: getFilter
       parameters:
         - $ref: "#/components/parameters/IParameterQueryPage"
-        - in: query
-          name: extended_mode
-          required: true
-          example: true
-          schema:
-            type: boolean
+        - $ref: "#/components/parameters/IParameterExtendedMode"
       requestBody:
         required: true
         content:
@@ -1849,6 +1844,80 @@ paths:
       security:
         - token: []
   # /Release
+  "/release/{id}":
+    get:
+      tags:
+        - Release
+      summary: Get release
+      description: Get release
+      operationId: getRelease
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterExtendedMode"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IReleaseResponse"
+      security:
+        - token: []
+  "/release/random":
+    get:
+      tags:
+        - Release
+      summary: Get random release
+      description: Get random release
+      operationId: getRandomRelease
+      parameters:
+        - $ref: "#/components/parameters/IParameterExtendedMode"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IReleaseResponse"
+      security:
+        - token: []
+  "/release/vote/add/{id}/{vote}":
+    get:
+      tags:
+        - Release
+      summary: Set a vote to a release
+      description: Set a vote to a release
+      operationId: ReleaseVote
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterReleaseVote"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+      security:
+        - token: []
+  "/release/vote/delete/{id}":
+    get:
+      tags:
+        - Release
+      summary: Remove a vote to a release
+      description: Remove a vote to a release
+      operationId: ReleaseUnvote
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+      security:
+        - token: []
   "/collectionMy/release/add/{id}":
     get:
       tags:
@@ -1946,6 +2015,137 @@ paths:
                 $ref: "#/components/responses/IDefaultResponse"
       security:
         - token: []
+  "/release/comment/all/{id}/{page}":
+    get:
+      tags:
+        - Release
+      summary: Get all comments of a release
+      description: Get all comments of a release
+      operationId: releaseComments
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/ICommentSort"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ICommentReleasePagedResponse"
+  "/release/comment/replies/{id}/{page}":
+    get:
+      tags:
+        - Release
+      summary: Get all replies of a comment
+      description: Get all replies of a comment
+      operationId: ReleaseCommentReplies
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/ICommentSort"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ICommentReleasePagedResponse"
+  "/release/comment/votes/{id}/{page}":
+    get:
+      tags:
+        - Release
+      summary: Get all votes of a comment
+      description: Get all votes of a comment
+      operationId: ReleaseCommentVotes
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/ICommentVotesSort"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ICommentVotesResponse"
+  "/release/comment/add/{id}":
+    post:
+      tags:
+        - Release
+      summary: Add a comment to a release
+      description: Add a comment to a release
+      operationId: ReleaseCommentAdd
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ICommentRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+  "/release/comment/edit/{id}":
+    post:
+      tags:
+        - Release
+      summary: Edit a comment of a release
+      description: Edit a comment of a Release
+      operationId: ReleaseCommentEdit
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requests/ICommentEditRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+  "/release/comment/delete/{id}":
+    get:
+      tags:
+        - Release
+      summary: Delete a comment from a release
+      description: Delete a comment from a release
+      operationId: ReleaseCommentDelete
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+  "/release/comment/vote/{id}/{vote}":
+    get:
+      tags:
+        - Release
+      summary: (Un)Vote a comment
+      description: (Un)Vote a comment
+      operationId: ReleaseCommentVote
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterCommentVote"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
 
 ##
 components:
@@ -3427,6 +3627,25 @@ components:
           - 3Stars
           - 2Stars
           - 1Star
+    IParameterExtendedMode:
+      in: query
+      name: extended_mode
+      required: true
+      example: true
+      schema:
+        type: boolean
+    IParameterReleaseVote:
+      in: path
+      name: vote
+      required: true
+      schema:
+        type: integer
+        enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
   #
   securitySchemes:
     token:
