@@ -39,6 +39,8 @@ tags:
     description: Profiles
   - name: Release
     description: Release
+  - name: Episode
+    description: Episode
 
 paths:
   # /config
@@ -2146,6 +2148,105 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/responses/IDefaultResponse"
+  "/related/{id}/{page}":
+    get:
+      tags:
+        - Release
+      summary: Get related releases
+      description: Get related releases
+      operationId: getRelatedReleases
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/IParameterApiVersionHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IReleasesPagedResponse"
+      security:
+        - token: []
+  ## /episode
+  "/episode/watch/{id}/{sourceId}/{episodePosition}":
+    get:
+      tags:
+        - Episode
+      summary: Mark episode as watched
+      description: Mark episode as watched
+      operationId: markEpisodeAsWatched
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterEpisodeSourceId"
+        - $ref: "#/components/parameters/IParameterEpisodePosition"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+      security:
+        - token: []
+  "/episode/unwatch/{id}/{sourceId}/{episodePosition}":
+    get:
+      tags:
+        - Episode
+      summary: Unmark episode as watched
+      description: Unmark episode as watched
+      operationId: unmarkEpisodeAsWatched
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterEpisodeSourceId"
+        - $ref: "#/components/parameters/IParameterEpisodePosition"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+      security:
+        - token: []
+  "/history/add/{id}/{sourceId}/{episodePosition}":
+    get:
+      tags:
+        - Episode
+      summary: Add episode to history
+      description: Add episode to history
+      operationId: addToHistory
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterEpisodeSourceId"
+        - $ref: "#/components/parameters/IParameterEpisodePosition"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+      security:
+        - token: []
+  "/history/delete/{id}":
+    get:
+      tags:
+        - Episode
+      summary: Remove episode from history
+      description: Remove episode from history
+      operationId: removeFromHistory
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IDefaultResponse"
+      security:
+        - token: []
 
 ##
 components:
@@ -3646,6 +3747,25 @@ components:
           - 3
           - 4
           - 5
+    ###
+    IParameterEpisodeDubberId:
+      in: path
+      name: episodeDubberId
+      required: true
+      schema:
+        type: integer
+    IParameterEpisodeSourceId:
+      in: path
+      name: sourceId
+      required: true
+      schema:
+        type: integer
+    IParameterEpisodePosition:
+      in: path
+      name: episodePosition
+      required: true
+      schema:
+        type: integer
   #
   securitySchemes:
     token:
