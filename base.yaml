@@ -1726,6 +1726,128 @@ paths:
                 $ref: "#/components/responses/IDefaultResponse"
       security:
         - token: []
+  "/profile/vote/release/voted/{id}/{page}":
+    get:
+      tags:
+        - Profile
+      summary: Get voted releases
+      description: Get voted releases
+      operationId: getProfileVotedReleases
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/IParameterVotedSort"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IVoteReleasePagedResponse"
+      security:
+        - token: []
+  "/profile/vote/release/unvoted/{page}":
+    get:
+      tags:
+        - Profile
+      summary: Get own unvoted releases
+      description: Get own unvoted releases
+      operationId: getProfileUnvotedReleases
+      parameters:
+        - name: page
+          in: path
+          description: page
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                example: 0
+              - type: string
+                const: "last"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IVoteReleasePagedResponse"
+      security:
+        - token: []
+  "/role/all/{page}/{id}":
+    get:
+      tags:
+        - Profile
+      summary: Get all profiles with this role id
+      description: Get all profiles with this role id
+      operationId: getAllProfilesWithRole
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IProfileShortPagedResponse"
+      security:
+        - token: []
+  "/channel/subscription/all/{page}":
+    get:
+      tags:
+        - Profile
+      summary: Get all subscriptions
+      description: Get all subscriptions
+      operationId: getAllSubscriptions
+      parameters:
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISearchChannelsPagedResponse"
+      security:
+        - token: []
+  "/channel/subscription/count":
+    get:
+      tags:
+        - Profile
+      summary: Get count of subscriptions
+      description: Get count of subscriptions
+      operationId: getSubscriptionCount
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ISubscriptionCountResponse"
+      security:
+        - token: []
+  "/export/bookmarks":
+    post:
+      tags:
+        - Profile
+      summary: Export bookmarks
+      description: Export bookmarks
+      operationId: exportBookmarks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requests/IExportBookmarksRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IExportBookmarksResponse"
+      security:
+        - token: []
   # /Release
   "/collectionMy/release/add/{id}":
     get:
@@ -1990,6 +2112,31 @@ components:
       required:
         - query
         - searchBy
+    IExportBookmarksRequest:
+      type: object
+      properties:
+        bookmarksExportProfileLists:
+          type: array
+          items:
+            anyOf:
+              - const: 0
+                title: NotWatchingOrAny
+                description: NotWatchingOrAny
+              - const: 1
+                title: Watching
+                description: Watching
+              - const: 2
+                title: PlanToWatch
+                description: PlanToWatch
+              - const: 3
+                title: Completed
+                description: Completed
+              - const: 4
+                title: OnHold
+                description: OnHold
+              - const: 5
+                title: Dropped
+                description: Dropped
   ###
   responses:
     IDefaultResponse:
@@ -2680,6 +2827,47 @@ components:
       properties:
         code:
           "$ref": "#/components/schemas/IBlocklistAddResult"
+    IVoteReleasePagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/IVoteRelease"
+    ISubscriptionCountResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResultEnum"
+        subscription_count:
+          type: integer
+    IExportBookmarksResponse:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/IBookmarkExportResult"
+        releases:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              title_alt:
+                type: string
+              title_ru:
+                type: string
+              title_original:
+                type: string
+              your_vote:
+                type: integer
+                nullable: true
+              profile_list_status:
+                type: integer
+              is_favorite:
+                type: boolean
   schemas:
     # -- Api Status Codes
     DefaultResultEnum:
@@ -2988,6 +3176,19 @@ components:
           x-enumNames:
             - AlreadyInBlocklist
           title: Error Codes
+    IBookmarkExportResult:
+      type: integer
+      format: integer
+      example: 0
+      oneOf:
+        - "$ref": "#/components/schemas/DefaultResultEnum"
+        - enum:
+            - 2
+            - 3
+          x-enumNames:
+            - InvalidProfileLists
+            - InvalidExtraFields
+          title: Error Codes
     #
     IPagedResponseBase:
       type: object
@@ -3204,6 +3405,28 @@ components:
         enum:
           - in
           - out
+    IParameterVotedSort:
+      in: query
+      name: sort
+      required: true
+      schema:
+        type: integer
+        enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+        x-enumNames:
+          - NewFirst
+          - OldFirst
+          - 5Stars
+          - 4Stars
+          - 3Stars
+          - 2Stars
+          - 1Star
   #
   securitySchemes:
     token:

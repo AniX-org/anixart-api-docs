@@ -1,3 +1,4 @@
 openapi.yaml
 .venv
 tmp_*
+anixart-api-docs.code-workspace
