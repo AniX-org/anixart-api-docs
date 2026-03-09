@@ -580,6 +580,7 @@ components:
         can_appeal:
           type: boolean
       required:
+        - code
         - release
         - blocks
         - streaming_platforms
@@ -695,6 +696,8 @@ components:
       type: object
     IDubbersResponse:
       properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResultEnum"
         types:
           items:
             $ref: '#/components/schemas/IDubber'
@@ -727,6 +730,8 @@ components:
       type: object
     ISourcesResponse:
       properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResultEnum"
         sources:
           items:
             $ref: '#/components/schemas/ISource'
@@ -776,6 +781,8 @@ components:
       type: object
     IEpisodesResponse:
       properties:
+        code:
+          "$ref": "#/components/schemas/DefaultResultEnum"
         episodes:
           items:
             $ref: '#/components/schemas/IEpisode'
@@ -786,6 +793,8 @@ components:
       type: object
     IEpisodeResponse:
       properties:
+        code:
+          $ref:  '#/components/schemas/DefaultResultEnum'
         episode:
           $ref: '#/components/schemas/IEpisode'
       required:

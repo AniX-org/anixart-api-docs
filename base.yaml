@@ -2204,6 +2204,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/IVideoResponse"
+      security:
+        - token: []
+  "/video/release/{id}/category/{category}/{page}":
+    get:
+      tags:
+        - Release
+      summary: Get videos of a release in a category
+      description: Get videos of a release in a category
+      operationId: getVideoOfAReleaseInCategory
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterVideoCategory"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/IVideoPagedResponse"
+      security:
+        - token: []
   ## /episode
   "/episode/watch/{id}/{sourceId}/{episodePosition}":
     get:
@@ -2283,7 +2305,102 @@ paths:
                 $ref: "#/components/responses/IDefaultResponse"
       security:
         - token: []
-
+  "/episode/{id}":
+    get:
+      tags:
+        - Episode
+      summary: Get episode dubbers
+      description: Get episode dubbers
+      operationId: getEpisodeDubs
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IDubbersResponse"
+      security:
+        - token: []
+  "/episode/{id}/{episodeDubberId}":
+    get:
+      tags:
+        - Episode
+      summary: Get episode sources for dubber id
+      description: Get episode sources for dubber id
+      operationId: getEpisodeSourcesForDubber
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterEpisodeDubberId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ISourcesResponse"
+      security:
+        - token: []
+  "/episode/{id}/{episodeDubberId}/{sourceId}":
+    get:
+      tags:
+        - Episode
+      summary: Get episode
+      description: Get episode
+      operationId: getEpisode
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterEpisodeDubberId"
+        - $ref: "#/components/parameters/IParameterEpisodeSourceId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IEpisodesResponse"
+      security:
+        - token: []
+  "/episode/target/{id}/{sourceId}/{episodePosition}":
+    get:
+      tags:
+        - Episode
+      summary: Get episode target
+      description: Get episode target
+      operationId: getEpisodeTarget
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterEpisodeSourceId"
+        - $ref: "#/components/parameters/IParameterEpisodePosition"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IEpisodeResponse"
+      security:
+        - token: []
+  "/episode/updates/{id}/{page}":
+    get:
+      tags:
+        - Episode
+      summary: Get episode updates
+      description: Get episode updates
+      operationId: getEpisodeUpdates
+      parameters:
+        - $ref: "#/components/parameters/IParameterId"
+        - $ref: "#/components/parameters/IParameterQueryPage"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ILastEpisodeUpdatePagedResponse"
+      security:
+        - token: []
 ##
 components:
   requests:
@@ -3225,6 +3342,15 @@ components:
               type: array
               items:
                 "$ref": "#/components/schemas/IVideo"
+    ILastEpisodeUpdatePagedResponse:
+      allOf:
+        - $ref: "#/components/schemas/IPagedResponseBase"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ILastEpisodeUpdate"
   schemas:
     # -- Api Status Codes
     DefaultResultEnum:
@@ -3563,6 +3689,7 @@ components:
       properties:
         code:
           "$ref": "#/components/schemas/DefaultResultEnum"
+          example: 0
         content:
           type: array
         total_count:
@@ -3833,6 +3960,24 @@ components:
       required: true
       schema:
         type: integer
+    IParameterVideoCategory:
+      in: path
+      name: category
+      required: true
+      schema:
+        type: integer
+        enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+        x-enumNames:
+          - Трейлеры
+          - Превью
+          - Опенинги
+          - Эндинги
+          - "Муз клипы"
   #
   securitySchemes:
     token:
