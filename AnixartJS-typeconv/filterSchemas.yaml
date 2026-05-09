@@ -342,11 +342,13 @@ components:
             nullable: true
             example: null
             enum:
+                - null
                 - 1
                 - 2
                 - 3
                 - 4
             x-enumNames:
+                - Any
                 - Winter
                 - Spring
                 - Summer

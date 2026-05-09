@@ -2518,7 +2518,7 @@ components:
                     example: null
                     $ref: "#/components/schemas/FYear"
                 season:
-                    $ref: "#/components/schemas/FSeason"
+                    $ref: "#/components/schemas/FSeasonId"
                 episodes_from:
                     $ref: "#/components/schemas/FEpisodeCount"
                 episodes_to:
