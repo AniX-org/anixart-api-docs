@@ -1000,30 +1000,23 @@ paths:
         post:
             tags:
                 - Filter
-            summary: Get releases by a filter
+            summary: Get releases by filter
             description: >
-                Get releases by a filter
+                Lists of releases on the main page use pre-defined filters.
 
+                ```
+                    |     Tab     |        Value        |
+                    | ----------- | ------------------- |
+                    | Latest      | Default filter      |
+                    | Anime       | country: "Япония"   |
+                    | Dunhua      | country: "Китай"    |
+                    | Finished    | status_id: 1        |
+                    | Ongoing     | status_id: 2        |
+                    | Announce    | status_id: 3        |
+                    | Films       | category_id: 2      |
+                    | OVA         | category_id: 3      |
+                ```
 
-                Lists on the home page is just filters in disguise
-
-
-                **Filter values**:
-
-
-                Last = Default values
-
-
-                Ongoing = status_id: 2
-
-
-                Announced = status_id: 3
-
-
-                Finished = status_id: 1
-
-
-                Films = category_id: 2
             operationId: getFilter
             parameters:
                 - $ref: "#/components/parameters/IParameterQueryPage"
