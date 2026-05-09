@@ -1,10 +1,13 @@
-import os, sys
-from yaml import load, dump
+import os
+import sys
+
+from yaml import dump, load
 
 try:
-    from yaml import CLoader as Loader, CDumper as Dumper
+    from yaml import CDumper as Dumper
+    from yaml import CLoader as Loader
 except ImportError:
-    from yaml import Loader, Dumper
+    from yaml import Dumper, Loader
 
 TYPES = {}
 BASE_FILE = "./base.yaml"
@@ -74,16 +77,6 @@ def find_unused(content):
 
     _foundRefs = {}
 
-    for request in content["components"]["requests"]:
-        # /components/requests/{request}
-        _foundRefs[f"#/components/requests/{request}"] = find_all_references(
-            f"#/components/requests/{request}", content_array
-        )
-    for response in content["components"]["responses"]:
-        # /components/responses/{response}
-        _foundRefs[f"#/components/responses/{response}"] = find_all_references(
-            f"#/components/responses/{response}", content_array
-        )
     for schema in content["components"]["schemas"]:
         # /components/schemas/{schema}
         _foundRefs[f"#/components/schemas/{schema}"] = find_all_references(
@@ -138,6 +131,7 @@ if __name__ == "__main__":
     main()
     if ("-w" or "--watch") in sys.argv:
         from watchfiles import watch
+
         try:
             print(f"Watching for changes in file `{BASE_FILE}`")
             for _ in watch(BASE_FILE):
